@@ -21,4 +21,5 @@ def booking():
 def thankyou():
 	return render_template("thankyou.html")
 
-app.run(port=3000)
+
+app.run(host='172.31.94.247', port=3000)
