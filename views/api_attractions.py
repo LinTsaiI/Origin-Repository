@@ -97,7 +97,7 @@ def get_attraction():
     elif not keyword:
       db = connection_pool.get_connection()
       cursor = db.cursor()
-      cursor.execute('SELECT * FROM taipei_attractions WHERE id>%s AND id<%s;', (page*12, page*12+14))
+      cursor.execute('SELECT * FROM taipei_attractions ORDER BY id LIMIT %s, %s;', (page*12, 13))
       results = cursor.fetchall()   # 取13個景點資料
       if not results:   # 非有效頁數取得的 results 為 None
         body = jsonify(
