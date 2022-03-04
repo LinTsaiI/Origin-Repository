@@ -15,8 +15,6 @@ def get_acctractions_list(page_results):
       cursor.execute(
           'SELECT url FROM attraction_imgs JOIN taipei_attractions ON attraction_id=id WHERE id=%s;', (data[0],))
       url_list = cursor.fetchall()   # list 中每個 url 為 tuple 型態
-      # cursor.close()
-      # db.close()
       images = []
       for item in url_list:
         images.append(item[0])   # 原型態為 tuple，取第 0 個位置的資料即為網址 string
@@ -33,6 +31,8 @@ def get_acctractions_list(page_results):
           "images": images
       }
       attractions_list.append(attraction)
+    cursor.close()
+    db.close()
     return attractions_list
 
 def ok_body(nextpage, data):
@@ -69,29 +69,24 @@ def get_attraction():
     if keyword:
       db = connection_pool.get_connection()
       cursor = db.cursor()
-      cursor.execute('''SELECT * FROM taipei_attractions WHERE name LIKE concat('%', %s, '%');''', (keyword,))
+      cursor.execute('''SELECT * FROM taipei_attractions WHERE name LIKE concat('%', %s, '%') LIMIT %s, 13;''', (keyword, page*12))   # 取13個符合 keyword 的景點
       results = cursor.fetchall()   # 得到一個結果 list，其中資料為 tuple 型態
-      n = len(results)   # 符合 keyword 的景點數量
-      # 若找不到關鍵字，回傳空 data
-      if n == 0:
+      number = len(results)
+      # 若沒有符合，回傳空 data
+      if number == 0:
         body = ok_body(None, [])
         return response(body, 200)
 
-      if n > 0 and n//12 < 1:   # 有符合 keyword 但結果不超過 12個 (只會顯示 page 0)，一次回傳所有符合的景點資料
+      # 有符合 keyword 但結果不超過 12個 (只會顯示 page 0)，一次回傳所有符合的景點資料
+      elif number > 0 and number <= 12:
         data = get_acctractions_list(results)
         body = ok_body(None, data)
         return response(body, 200)
       
-      elif n//12 > 0:   # 表示符合 keyword 的超過 12 個，有下一頁
-        if page < n//12:   # page 不在最後一頁
-          data = get_acctractions_list(results[page*12:page*12+12])
-          body = ok_body(page+1, data)
-          return response(body, 200)
-
-        elif page >= n/12:   # page 在最後一頁，或要求的頁面超過最後一頁(不存在)
-          data = get_acctractions_list(results[page*12:page*12+12])
-          body = ok_body(None, data)
-          return response(body, 200)
+      elif number > 12:   # 取到 13 個表示有下一頁
+        data = get_acctractions_list(results[0:12])   # 只顯示12個
+        body = ok_body(page+1, data)
+        return response(body, 200)
     
     # 若沒有 keyword (預設為 None)，則依 page 決定顯示的項目及是否有下一頁
     elif not keyword:
@@ -104,7 +99,7 @@ def get_attraction():
         body = ok_body(None, [])
         return response(body, 200)
 
-      elif number <= 12:   # 取到12個或不足12個，表示沒有下一頁，只顯示 page 0
+      elif number <= 12:   # 取到12個或不足12個，表示沒有下一頁 (只顯示 page 0)
         data = get_acctractions_list(results)
         body = ok_body(None, data)
         return response(body, 200)
@@ -114,7 +109,8 @@ def get_attraction():
         body = ok_body(page+1, data)
         return response(body, 200)
 
-  except:
+  except Exception as e:
+    print(e)
     message = "系統性錯誤，請稍後再試"
     body = error_body(message)
     return response(body, 500)
@@ -145,7 +141,8 @@ def get_attraction_by_id(attractionId):
       body = error_body(message)
       return response(body, 400)
 
-  except:
+  except Exception as e:
+    print(e)
     message = "系統性錯誤，請稍後再試"
     body = error_body(message)
     return response(body, 500)
