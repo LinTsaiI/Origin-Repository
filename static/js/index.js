@@ -38,7 +38,7 @@ function createItem(imgURL, title, mrt, category) {
 }
 
 function getAttractions(page) {
-  fetch(`http://0.0.0.0:3000/api/attractions?page=${page}`)
+  fetch(`http://174.129.52.161:3000/api/attractions?page=${page}`)
     .then(response => response.json())
     .then(results => {
       let nextPage = results.nextpage;
@@ -72,7 +72,7 @@ function getKeywordAttractions() {
   let keyword = inputField.value;
   if(keyword != '') {
     searchBtn.removeEventListener('click', () => false);
-    fetch(`http://0.0.0.0:3000/api/attractions?keyword=${keyword}`)
+    fetch(`http://174.129.52.161:3000/api/attractions?keyword=${keyword}`)
       .then(response => response.json())
       .then(results => {
         let nextPage = results.nextpage;
