@@ -5,35 +5,22 @@ api_attractions = Blueprint('api_attractions', __name__)
 
 
 def get_acctractions_list(page_results):
-  if not page_results:   # 若搜尋結果為空值
-    return []
-  else:
-    db = connection_pool.get_connection()
-    cursor = db.cursor()
-    attractions_list = []
-    for data in page_results:
-      cursor.execute(
-          'SELECT url FROM attraction_imgs JOIN taipei_attractions ON attraction_id=id WHERE id=%s;', (data[0],))
-      url_list = cursor.fetchall()   # list 中每個 url 為 tuple 型態
-      images = []
-      for item in url_list:
-        images.append(item[0])   # 原型態為 tuple，取第 0 個位置的資料即為網址 string
-      attraction = {
-          "id": data[0],
-          "name": data[1],
-          "category": data[2],
-          "description": data[3],
-          "address": data[4],
-          "transport": data[5],
-          "mrt": data[6],
-          "latitude": data[7],
-          "longitude": data[8],
-          "images": images
-      }
-      attractions_list.append(attraction)
-    cursor.close()
-    db.close()
-    return attractions_list
+  attractions_list = []
+  for data in page_results:
+    attraction = {
+        "id": data[0],
+        "name": data[1],
+        "category": data[2],
+        "description": data[3],
+        "address": data[4],
+        "transport": data[5],
+        "mrt": data[6],
+        "latitude": data[7],
+        "longitude": data[8],
+        "images": data[9].split(',')
+    }
+    attractions_list.append(attraction)
+  return attractions_list
 
 def ok_body(nextpage, data):
   body = jsonify(
@@ -69,12 +56,17 @@ def get_attraction():
     if keyword:
       db = connection_pool.get_connection()
       cursor = db.cursor()
-      cursor.execute('''SELECT * FROM taipei_attractions WHERE name LIKE concat('%', %s, '%') LIMIT %s, 13;''', (keyword, page*12))   # 取13個符合 keyword 的景點
+      cursor.execute('''
+          SELECT taipei_attractions.*,
+                (SELECT GROUP_CONCAT(url) FROM attraction_imgs GROUP BY attraction_id HAVING attraction_id=taipei_attractions.id) AS images
+          FROM taipei_attractions
+          WHERE name LIKE concat('%', %s, '%') LIMIT %s, 13;
+      ''', (keyword, page*12))
       results = cursor.fetchall()   # 得到一個結果 list，其中資料為 tuple 型態
       number = len(results)
       # 若沒有符合，回傳空 data
       if number == 0:
-        body = ok_body(None, [])
+        body = ok_body(None, None)
         return response(body, 200)
 
       # 有符合 keyword 但結果不超過 12個 (只會顯示 page 0)，一次回傳所有符合的景點資料
@@ -92,11 +84,16 @@ def get_attraction():
     elif not keyword:
       db = connection_pool.get_connection()
       cursor = db.cursor()
-      cursor.execute('SELECT * FROM taipei_attractions ORDER BY id LIMIT %s, %s;', (page*12, 13))
+      cursor.execute('''
+          SELECT taipei_attractions.*,
+                (SELECT GROUP_CONCAT(url) FROM attraction_imgs GROUP BY attraction_id HAVING attraction_id=taipei_attractions.id) AS images
+          FROM taipei_attractions
+          ORDER BY id LIMIT %s, %s;
+      ''', (page*12, 13))
       results = cursor.fetchall()   # 取13個景點資料
       number = len(results)
       if not results:   # 非有效頁數取得的 results 為 None
-        body = ok_body(None, [])
+        body = ok_body(None, None)
         return response(body, 200)
 
       elif number <= 12:   # 取到12個或不足12個，表示沒有下一頁 (只顯示 page 0)
@@ -125,7 +122,12 @@ def get_attraction_by_id(attractionId):
   try:
     db = connection_pool.get_connection()
     cursor = db.cursor()
-    cursor.execute('SELECT * FROM taipei_attractions WHERE id=%s;', (attractionId,))
+    cursor.execute('''
+        SELECT taipei_attractions.*,
+              (SELECT GROUP_CONCAT(url) FROM attraction_imgs GROUP BY attraction_id HAVING attraction_id=taipei_attractions.id) AS images
+        FROM taipei_attractions
+        WHERE taipei_attractions.id=%s;
+      ''', (attractionId,))
     result = cursor.fetchall()
     if result:
       data = get_acctractions_list(result)[0]   # 只會有一個景點，取 attractions_list 裡的第一個 {}

@@ -28,8 +28,9 @@ cursor.execute('''
 # 圖片url單獨放置一個表格 (attraction_imgs)，attraction_id 對應到 taipei_attractions 表格的 id
 cursor.execute('''
   CREATE TABLE attraction_imgs(
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
     attraction_id BIGINT NOT NULL,
-    url VARCHAR(255) PRIMARY KEY,
+    url TEXT,
     FOREIGN KEY(attraction_id) REFERENCES taipei_attractions(id) ON DELETE CASCADE);
 ''')
 
@@ -55,12 +56,9 @@ for attraction in attractions:
 
 for index, value in enumerate(attractions):
   images = value['file'].replace('https', ' https').split()   # 取得網址列表
-  for img in images:
-    filtered_imgs = []
-    img = img.lower()
-    if 'jpg' in img or 'png' in img:
-      filtered_imgs.append(img)   # 取得移除非jpg或png的網址列表
-    for url in filtered_imgs:
+  for url in images:
+    url = url.lower()
+    if 'jpg' in url or 'png' in url:
       cursor.execute('''
         INSERT INTO attraction_imgs(attraction_id, url)
         VALUES (%s, %s);''', (index+1, url)
@@ -68,4 +66,5 @@ for index, value in enumerate(attractions):
 
 
 cursor.close()
+db.commit()
 db.close()
