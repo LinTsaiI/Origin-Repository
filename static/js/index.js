@@ -1,6 +1,6 @@
 let attractionGroup = document.getElementById('attractions_group');
 let inputField = document.getElementById('search_field');
-let searchBtn = document.getElementById('icon_search')
+let searchBtn = document.getElementById('search_btn')
 /*
 生成一個 attraction 區塊
 <div class='attraction'>
@@ -78,10 +78,12 @@ function getKeywordAttractions() {
         let nextPage = results.nextpage;
         let attractionData = results.data
         if(!attractionData) {
-          document.querySelectorAll('.attraction').forEach(e => e.remove());
-          let msg = document.createElement('div');
-          msg.id = 'msg';
-          attractionGroup.appendChild(msg).innerHTML = '查無此結果';
+          if(!document.getElementById('msg')) {
+            document.querySelectorAll('.attraction').forEach(e => e.remove());
+            let msg = document.createElement('div');
+            msg.id = 'msg';
+            attractionGroup.appendChild(msg).innerHTML = '查無此結果';
+          } 
         } else {
           document.querySelectorAll('.attraction').forEach(e => e.remove());   // 先將原先畫面loading的結果清除
           if(document.getElementById('msg')) {

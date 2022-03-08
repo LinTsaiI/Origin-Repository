@@ -114,7 +114,7 @@ button {
   padding: 15px;
 }
 
-.search > button {
+#search_btn {
   width: 60px;
   height: 46px;
   border: 0;
