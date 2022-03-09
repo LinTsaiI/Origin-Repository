@@ -37,94 +37,82 @@ function createItem(imgURL, title, mrt, category) {
   return attraction;
 }
 
-function getAttractions(page) {
-  fetch(`http://174.129.52.161:3000/api/attractions?page=${page}`)
+function renderAttractions(attractionData, nextPage, keyword=[]) {
+  for (let i = 0; i < attractionData.length; i++) {
+    let imgURL = attractionData[i].images[0];
+    let title = attractionData[i].name;
+    let mrt = attractionData[i].mrt;
+    let category = attractionData[i].category;
+    let attraction = createItem(imgURL, title, mrt, category);
+    attractionGroup.appendChild(attraction);
+  }
+  if (nextPage) {
+    let html = document.documentElement
+    window.onscroll = function () {
+      if (html.scrollTop + html.clientHeight == html.scrollHeight) {
+        getAttractions(nextPage, keyword)
+          .then(results => {
+            let attractionData = results[0];
+            let nextPage = results[1];
+            renderAttractions(attractionData, nextPage, keyword);
+          })
+      }
+    }
+  } else {
+    // 若沒有下一頁則停止偵測 scroll event
+    window.onscroll = () => false;
+  }
+}
+
+// 取得景點資訊
+async function getAttractions(page=0, keyword=[]) {
+  let data = await fetch(`http://174.129.52.161:3000/api/attractions?page=${page}&keyword=${keyword}`)
     .then(response => response.json())
     .then(results => {
       let nextPage = results.nextpage;
-      let attractionData = results.data   // 景點的列表
-      if(attractionData) {
-        for(let i = 0; i < attractionData.length; i++) {
-          let imgURL = attractionData[i].images[0];
-          let title = attractionData[i].name;
-          let mrt = attractionData[i].mrt;
-          let category = attractionData[i].category;
-          let attraction = createItem(imgURL, title, mrt, category);
-          attractionGroup.appendChild(attraction);
-        }
-        if (nextPage) {
-          let html = document.documentElement
-          window.onscroll = function () {
-            if (html.scrollTop + html.clientHeight == html.scrollHeight) {
-              getAttractions(nextPage);
-            }
-          }
-        } else {
-          // 若沒有下一頁則停止偵測 scroll event
-          window.onscroll = () => false;
-        }
-      }
+      let attractionData = results.data;
+      return [attractionData, nextPage];
     })
     .catch(error => console.log('Error: ' + error))
+  return data;
 }
 
+// 進入首頁載入頁面
+function load() {
+  getAttractions()
+    .then(results => {
+      let attractionData = results[0];
+      let nextPage = results[1];
+      renderAttractions(attractionData, nextPage);
+    })
+}
+
+// 輸入關鍵字
 function getKeywordAttractions() {
   let keyword = inputField.value;
-  if(keyword != '') {
+  if (keyword != '') {
     searchBtn.removeEventListener('click', () => false);
-    fetch(`http://174.129.52.161:3000/api/attractions?keyword=${keyword}`)
-      .then(response => response.json())
+    getAttractions(0, keyword)
       .then(results => {
-        let nextPage = results.nextpage;
-        let attractionData = results.data
-        if(!attractionData) {
-          if(!document.getElementById('msg')) {
+        let attractionData = results[0];
+        let nextPage = results[1];
+        // 沒抓到景點
+        if (!attractionData) {
+          // 確認頁面是否已有'查無此結果'
+          if (!document.getElementById('msg')) {
             document.querySelectorAll('.attraction').forEach(e => e.remove());
             let msg = document.createElement('div');
             msg.id = 'msg';
             attractionGroup.appendChild(msg).innerHTML = '查無此結果';
-          } 
-        } else {
-          document.querySelectorAll('.attraction').forEach(e => e.remove());   // 先將原先畫面loading的結果清除
-          if(document.getElementById('msg')) {
+          }
+        } else {   // 有抓到景點
+          // 確認當前頁面是否顯示'查無此結果'
+          if (document.getElementById('msg')) {
             document.getElementById('msg').remove();
-            for (let i = 0; i < attractionData.length; i++) {
-              let imgURL = attractionData[i].images[0];
-              let title = attractionData[i].name;
-              let mrt = attractionData[i].mrt;
-              let category = attractionData[i].category;
-              let attraction = createItem(imgURL, title, mrt, category);
-              attractionGroup.appendChild(attraction);
-            }
-            if (nextPage) {
-              let html = document.documentElement
-              window.onscroll = function () {
-                if (html.scrollTop + html.clientHeight == html.scrollHeight) {
-                  getAttractions(nextPage);
-                }
-              }
-            } else {
-              window.onscroll = () => false;
-            }
+            renderAttractions(attractionData, nextPage, keyword);
           } else {
-            for (let i = 0; i < attractionData.length; i++) {
-              let imgURL = attractionData[i].images[0];
-              let title = attractionData[i].name;
-              let mrt = attractionData[i].mrt;
-              let category = attractionData[i].category;
-              let attraction = createItem(imgURL, title, mrt, category);
-              attractionGroup.appendChild(attraction);
-            }
-            if (nextPage) {
-              let html = document.documentElement
-              window.onscroll = function () {
-                if (html.scrollTop + html.clientHeight == html.scrollHeight) {
-                  getAttractions(nextPage);
-                }
-              }
-            } else {
-              window.onscroll = () => false;
-            }
+            document.querySelectorAll('.attraction').forEach(e => e.remove());   // 先將原先畫面loading的結果清除
+            renderAttractions(attractionData, nextPage, keyword);
           }
         }
       })
@@ -133,6 +121,6 @@ function getKeywordAttractions() {
 }
 
 
-window.addEventListener('load', () => getAttractions(0));
+window.addEventListener('load', () => load());
 searchBtn.addEventListener('click', getKeywordAttractions);
 
