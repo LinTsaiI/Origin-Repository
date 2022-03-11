@@ -1,6 +1,7 @@
 let attractionGroup = document.getElementById('attractions_group');
 let inputField = document.getElementById('search_field');
 let searchBtn = document.getElementById('search_btn')
+let isLoading = false;
 /*
 生成一個 attraction 區塊
 <div class='attraction'>
@@ -49,7 +50,7 @@ function renderAttractions(attractionData, nextPage, keyword=[]) {
   if (nextPage) {
     let html = document.documentElement
     window.onscroll = function () {
-      if (html.scrollTop + html.clientHeight == html.scrollHeight) {
+      if (html.scrollTop + html.clientHeight + 30 >= html.scrollHeight) {
         getAttractions(nextPage, keyword)
           .then(results => {
             let attractionData = results[0];
@@ -66,15 +67,19 @@ function renderAttractions(attractionData, nextPage, keyword=[]) {
 
 // 取得景點資訊
 async function getAttractions(page=0, keyword=[]) {
-  let data = await fetch(`http://174.129.52.161:3000/api/attractions?page=${page}&keyword=${keyword}`)
-    .then(response => response.json())
-    .then(results => {
-      let nextPage = results.nextpage;
-      let attractionData = results.data;
-      return [attractionData, nextPage];
-    })
-    .catch(error => console.log('Error: ' + error))
-  return data;
+  if (!isLoading) {
+    isLoading = true
+    let data = await fetch(`/api/attractions?page=${page}&keyword=${keyword}`)
+      .then(response => response.json())
+      .then(results => {
+        let nextPage = results.nextpage;
+        let attractionData = results.data;
+        return [attractionData, nextPage];
+      })
+      .catch(error => console.log('Error: ' + error))
+    isLoading = false;
+    return data;
+  }
 }
 
 // 進入首頁載入頁面
@@ -87,40 +92,36 @@ function load() {
     })
 }
 
+let previousInput;
 // 輸入關鍵字
 function getKeywordAttractions() {
   let keyword = inputField.value;
-  if (keyword != '') {
-    searchBtn.removeEventListener('click', () => false);
+  if (keyword != '' && keyword != previousInput) {
+    previousInput = keyword;
+    attractionGroup.innerHTML = '';  // 清除原本頁面
     getAttractions(0, keyword)
       .then(results => {
         let attractionData = results[0];
         let nextPage = results[1];
         // 沒抓到景點
         if (!attractionData) {
-          // 確認頁面是否已有'查無此結果'
-          if (!document.getElementById('msg')) {
-            document.querySelectorAll('.attraction').forEach(e => e.remove());
             let msg = document.createElement('div');
             msg.id = 'msg';
-            attractionGroup.appendChild(msg).innerHTML = '查無此結果';
-          }
+            attractionGroup.appendChild(msg).innerHTML = `查無「${keyword}」結果`;
         } else {   // 有抓到景點
-          // 確認當前頁面是否顯示'查無此結果'
-          if (document.getElementById('msg')) {
-            document.getElementById('msg').remove();
             renderAttractions(attractionData, nextPage, keyword);
-          } else {
-            document.querySelectorAll('.attraction').forEach(e => e.remove());   // 先將原先畫面loading的結果清除
-            renderAttractions(attractionData, nextPage, keyword);
-          }
         }
       })
       .catch(error => console.log('Error: ' + error))
+  } else if (keyword != '' && keyword == previousInput) {
+    return false;
   }
 }
 
-
-window.addEventListener('load', () => load());
+window.addEventListener('load', load);
 searchBtn.addEventListener('click', getKeywordAttractions);
-
+inputField.addEventListener('keyup', function(event) {
+  if (event.key === 'Enter') {
+    searchBtn.click();
+  }
+});
