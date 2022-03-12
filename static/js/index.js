@@ -50,7 +50,7 @@ function renderAttractions(attractionData, nextPage, keyword=[]) {
   if (nextPage) {
     let html = document.documentElement
     window.onscroll = function () {
-      if (html.scrollTop + html.clientHeight + 30 >= html.scrollHeight) {
+      if (html.scrollTop + html.clientHeight + 40 >= html.scrollHeight) {
         getAttractions(nextPage, keyword)
           .then(results => {
             let attractionData = results[0];
