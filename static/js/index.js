@@ -120,7 +120,7 @@ function getKeywordAttractions() {
 
 window.addEventListener('load', load);
 searchBtn.addEventListener('click', getKeywordAttractions);
-inputField.addEventListener('keyup', function(event) {
+inputField.addEventListener('keydown', function(event) {
   if (event.key === 'Enter') {
     searchBtn.click();
   }
