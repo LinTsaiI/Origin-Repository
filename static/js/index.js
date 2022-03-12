@@ -38,6 +38,23 @@ function createItem(imgURL, title, mrt, category) {
   return attraction;
 }
 
+// 取得景點資訊
+async function getAttractions(page = 0, keyword = []) {
+  if (!isLoading) {
+    isLoading = true
+    let data = await fetch(`/api/attractions?page=${page}&keyword=${keyword}`)
+      .then(response => response.json())
+      .then(results => {
+        let nextPage = results.nextpage;
+        let attractionData = results.data;
+        return [attractionData, nextPage];
+      })
+      .catch(error => console.log('Error: ' + error))
+    isLoading = false;
+    return data;
+  }
+}
+
 function renderAttractions(attractionData, nextPage, keyword=[]) {
   for (let i = 0; i < attractionData.length; i++) {
     let imgURL = attractionData[i].images[0];
@@ -62,23 +79,6 @@ function renderAttractions(attractionData, nextPage, keyword=[]) {
   } else {
     // 若沒有下一頁則停止偵測 scroll event
     window.onscroll = () => false;
-  }
-}
-
-// 取得景點資訊
-async function getAttractions(page=0, keyword=[]) {
-  if (!isLoading) {
-    isLoading = true
-    let data = await fetch(`/api/attractions?page=${page}&keyword=${keyword}`)
-      .then(response => response.json())
-      .then(results => {
-        let nextPage = results.nextpage;
-        let attractionData = results.data;
-        return [attractionData, nextPage];
-      })
-      .catch(error => console.log('Error: ' + error))
-    isLoading = false;
-    return data;
   }
 }
 
