@@ -55,10 +55,62 @@ body {
   cursor: pointer;
 }
 
-.top_section {
+.attraction_imgs {
   display: flex;
-  justify-content: center;
-  margin: 94px auto 40px auto;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  /* background-image: url(../img/demo.png); */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.arrow {
+  position: relative;
+  flex-grow: 1;
+  width: 100%;
+  text-align: center;
+  top: 50%;
+}
+
+#left_arrow {
+  position: absolute;
+  left: 10px;
+  cursor: pointer;
+}
+
+#right_arrow {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+}
+
+.dots {
+  display: flex;
+}
+
+.dot_group {
+  width: 12px;
+  height: 12px;
+  margin: 6px;
+}
+
+.circle {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #FFFFFF;
+  background-color: #FFFFFF;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.dot {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 6px;
+  background-color: #000000;
 }
 
 #title {
@@ -107,6 +159,43 @@ input[type='date'] {
   height: 35px;
 }
 
+
+.radio {
+  display: flex;
+  margin: 0 10px;
+}
+
+.option {
+  font-weight: normal;
+  cursor: pointer;
+  padding-left: 4px;
+}
+
+.radio_input {
+  width: 22px;
+  height: 22px;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  cursor: pointer;
+  text-align: center;
+}
+
+.radio_label {
+  width: 100%;
+  height: 100%;
+  border: 2px solid #FFFFFF;
+  background-color: #448899;
+  border-radius: 50%;
+}
+
+#morning .radio_label {
+  visibility: visible;
+}
+
+#afternoon .radio_label {
+  visibility: hidden;
+}
+
 .inline {
   display: flex;
   font-weight: bold;
@@ -118,10 +207,13 @@ input[type='date'] {
   cursor: pointer;
 }
 
+.price {
+  font-weight: normal;
+}
+
 .info_detail {
   border-top: 1px solid #E8E8E8;
-  padding-top: 30px;
-  padding-bottom: 60px;
+  padding: 30px 10px 60px 10px;
   margin: auto;
 }
 
@@ -154,18 +246,20 @@ input[type='date'] {
   .top_section {
     width: 1200px;
     height: 400px;
+    display: flex;
+    justify-content: center;
+    margin: 94px auto 40px auto;
+    padding: 0 15px;
   }
 
   .attraction_imgs {
     width: 540px;
     height: 400px;
-    margin: 0 15px;
   }
-
-
+  
   .booking {
     height: 400px;
-    margin: 0 15px;
+    margin: 0 0 0 30px;
   }
 
   .booking_form {
@@ -173,37 +267,56 @@ input[type='date'] {
   }
 
   .info_detail {
-  width: 1200px;
+    width: 1200px;
+  }
 }
 
-}
-
-/* 平板 (<=1200px, > 600px)*/
-@media all and (max-width: 1200px) {
-
-}
-
-/* 行動裝置 (<= 600px, min 360px) */
-@media all and (max-width: 600px) {
-  #footer {
-    margin-top: 15px;
+/* 平板 (<=1200px, > 680px)*/
+@media all and (max-width: 1200px) and (min-width: 680.01px) {
+  .top_section {
+    width: 100vw;
+    display: flex;
+    margin: 94px auto 40px auto;
+    padding: 0 15px;
   }
 
   .attraction_imgs {
-    min-height: 350px;
+    width: 55vw;
   }
 
+  .booking {
+    width: 45vw;
+    padding: 0 0 0 15px;
+  }
+}
+
+/* 行動裝置 (<= 680px, min 360px) */
+@media all and (max-width: 680px) {
   .top_section {
-    flex-wrap: wrap;
+    margin: 94px auto 20px auto;
+    display: block;
+    padding: 0;
+  }
+
+  .attraction_imgs {
+    width: 100vw;
+    min-height: 75vw;
+  }
+
+  .arrow {
+    align-items: center;
+  }
+
+  .arrow > img {
+    top: 50%;
   }
 
   .booking {
     width: 100vw;
-    margin: 20px 10px;
+    padding: 20px 10px;
   }
 
   .booking_form {
-    min-height: 300px;
+    width: 100%;
   }
-
 }

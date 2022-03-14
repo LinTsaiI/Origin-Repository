@@ -13,9 +13,10 @@ let isLoading = false;
   </div>
 </div>
 */
-function createItem(imgURL, title, mrt, category) {
+function createItem(id, imgURL, title, mrt, category) {
   let attraction = document.createElement('div');
   attraction.className = 'attraction';
+  attraction.setAttribute('onclick', `location.href='/attraction/${id}'`);
   let attraction_img = document.createElement('img');
   attraction_img.id = 'attraction_img';
   attraction_img.src = imgURL;
@@ -55,13 +56,15 @@ async function getAttractions(page = 0, keyword = []) {
   }
 }
 
+// 在畫面上畫出景點 block
 function renderAttractions(attractionData, nextPage, keyword=[]) {
   for (let i = 0; i < attractionData.length; i++) {
+    let id = attractionData[i].id;
     let imgURL = attractionData[i].images[0];
     let title = attractionData[i].name;
     let mrt = attractionData[i].mrt;
     let category = attractionData[i].category;
-    let attraction = createItem(imgURL, title, mrt, category);
+    let attraction = createItem(id, imgURL, title, mrt, category);
     attractionGroup.appendChild(attraction);
   }
   if (nextPage) {

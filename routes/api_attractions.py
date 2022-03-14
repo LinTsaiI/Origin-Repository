@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, make_response
-from views.db_pool import connection_pool
+from routes.db_pool import connection_pool
 
 api_attractions = Blueprint('api_attractions', __name__)
 
@@ -56,6 +56,7 @@ def get_attraction():
     if keyword:
       db = connection_pool.get_connection()
       cursor = db.cursor()
+      # cursor.execute('SET SESSION group_concat_max_len = 1000000')
       cursor.execute('''
           SELECT taipei_attractions.*,
                 (SELECT GROUP_CONCAT(url) FROM attraction_imgs GROUP BY attraction_id HAVING attraction_id=taipei_attractions.id) AS images
@@ -84,6 +85,7 @@ def get_attraction():
     elif not keyword:
       db = connection_pool.get_connection()
       cursor = db.cursor()
+      # cursor.execute('SET SESSION group_concat_max_len = 1000000')
       cursor.execute('''
           SELECT taipei_attractions.*,
                 (SELECT GROUP_CONCAT(url) FROM attraction_imgs GROUP BY attraction_id HAVING attraction_id=taipei_attractions.id) AS images
@@ -122,6 +124,7 @@ def get_attraction_by_id(attractionId):
   try:
     db = connection_pool.get_connection()
     cursor = db.cursor()
+    # cursor.execute('SET SESSION group_concat_max_len = 1000000')
     cursor.execute('''
         SELECT taipei_attractions.*,
               (SELECT GROUP_CONCAT(url) FROM attraction_imgs GROUP BY attraction_id HAVING attraction_id=taipei_attractions.id) AS images

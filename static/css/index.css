@@ -151,6 +151,7 @@ input[type=text] {
   box-sizing: border-box;
   border-radius: 5px;
   margin: 15px auto;
+  cursor: pointer;
 }
 
 .attraction > img {

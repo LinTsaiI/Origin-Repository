@@ -1,0 +1,183 @@
+body {
+  font-family: Noto Sans TC;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  margin: 0;
+  min-height: calc(100vh - 54px);
+  position: relative;
+  color: #666666;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.navigation_block {
+  width: 100%;
+  background-color: #FFFFFF;
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid #E8E8E8;
+}
+
+.navigation {
+  width: 100vw;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  margin: 10px 0;
+}
+
+.page_name {
+  text-align: left;
+  margin-left: 10px;
+  font-weight: bold;
+  font-size: 30px;
+  width: 150px;
+  height: 34px;
+  line-height: 34px;
+  color: #448899;
+}
+
+.btn_container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-self: end;
+  text-align: center;
+}
+
+.btn {
+  line-height: 14px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.main {
+  width: 1200px;
+  margin: 94px auto 40px auto;
+
+}
+
+.head {
+  font-weight: bold;
+  font-size: 19px;
+}
+
+.headline {
+  margin: 40px auto 35px 100px;
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  padding: 0 100px 40px 100px;
+  border-bottom: 1px solid #E8E8E8;
+}
+
+.attraction_img {
+  width: 250px;
+  height: 200px;
+}
+
+.detail {
+  position: relative;
+  width: 700px;
+  margin-left: 22px;
+}
+
+.delete {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+}
+
+.topic {
+  font-weight: bold;
+  color: #448899;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.inline {
+  display: flex;
+}
+
+.contact {
+  width: 100%;
+  border-bottom: 1px solid #E8E8E8;
+  padding: 40px 100px;
+}
+
+.input {
+  width: 200px;
+  height: 38px;
+}
+
+input[type='text'] {
+  margin: 10px auto 10px 10px;
+}
+
+.payment {
+  width: 100%;
+  border-bottom: 1px solid #E8E8E8;
+  padding: 40px 100px;
+}
+
+.confirm {
+  padding: 40px 110px;
+}
+
+.total {
+  display: flex;
+  margin: 0 0 0 auto;
+  font-weight: bold;
+}
+
+.enter {
+  font-size: 19px;
+  color: #FFFFFF;
+  border: 0;
+  background: #448899;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin: 25px 0 22px auto;
+}
+
+#footer {
+  width: 100%;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+  background: #757575;
+  line-height: 104px;
+  margin-bottom: end;
+  bottom: 0;
+}
+
+/* 桌機筆電 (> 1200px) */
+@media all and (min-width: 1200.01px) {
+  .navigation {
+    width: 1200px;
+  }
+
+}
+
+/* 平板 (<=1200px, > 600px)*/
+@media all and (max-width: 1200px) {
+
+}
+
+/* 行動裝置 (<= 600px, min 360px) */
+@media all and (max-width: 600px) {
+  #footer {
+    margin-top: 15px;
+  }
+}

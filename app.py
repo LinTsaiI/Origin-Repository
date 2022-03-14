@@ -1,5 +1,5 @@
 from flask import *
-from views.api_attractions import api_attractions
+from routes.api_attractions import api_attractions
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False
 app.config["TEMPLATES_AUTO_RELOAD"]=True
