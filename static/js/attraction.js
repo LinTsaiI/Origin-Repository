@@ -54,7 +54,6 @@ function renderAttraction(result) {
   let transport = result.transport;
   let mrt = result.mrt;
   let images = result.images;
-  console.log(images.length)
   renderDots(images.length);
   dot(0);
   document.querySelector('.attraction_imgs').style.backgroundImage = `url('${images[0]}')`

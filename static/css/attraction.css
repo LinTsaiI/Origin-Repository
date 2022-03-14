@@ -215,6 +215,7 @@ input[type='date'] {
   border-top: 1px solid #E8E8E8;
   padding: 30px 10px 60px 10px;
   margin: auto;
+  line-height: 23px;
 }
 
 .info_detail > div{
@@ -238,7 +239,7 @@ input[type='date'] {
 }
 
 /* 桌機筆電 (> 1200px) */
-@media all and (min-width: 1200.01px) {
+@media all and (min-width: 1200px) {
   .navigation {
     width: 1200px;
   }
@@ -272,7 +273,7 @@ input[type='date'] {
 }
 
 /* 平板 (<=1200px, > 680px)*/
-@media all and (max-width: 1200px) and (min-width: 680.01px) {
+@media all and (max-width: 1199px) and (min-width: 681px) {
   .top_section {
     width: 100vw;
     display: flex;
@@ -281,11 +282,11 @@ input[type='date'] {
   }
 
   .attraction_imgs {
-    width: 55vw;
+    width: 50vw;
   }
 
   .booking {
-    width: 45vw;
+    width: 50vw;
     padding: 0 0 0 15px;
   }
 }
