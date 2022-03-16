@@ -38,6 +38,10 @@ button {
   margin: 10px 0;
 }
 
+.navigation > a {
+  text-decoration: none;
+}
+
 .page_name {
   text-align: left;
   margin-left: 10px;
@@ -157,6 +161,7 @@ input[type=text] {
 .attraction > img {
   width: 100%;
   object-fit: cover;
+  border-top-left-radius: 5px;    border-top-right-radius: 5px;
 }
 
 #title {
@@ -226,14 +231,12 @@ input[type=text] {
     width: 270px;
     border: 1px solid #E8E8E8;
     box-sizing: border-box;
-    border-radius: 5px;
     margin: 15px auto;
   }
 
   .attraction > img {
     height: 160px;
   }
-
 }
 
 /* 平板 (<=1200px, > 600px)*/
@@ -261,7 +264,6 @@ input[type=text] {
     width: 95%;
     border: 1px solid #E8E8E8;
     box-sizing: border-box;
-    border-radius: 5px;
     margin: 15px auto;
   }
 

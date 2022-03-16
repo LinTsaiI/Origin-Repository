@@ -13,7 +13,7 @@
 <body>
   <div class='navigation_block'>
     <div class='navigation'>
-      <div class='page_name'>台北一日遊</div>
+      <a href='/'><div class='page_name'>台北一日遊</div></a>
       <div class='btn_container'>
         <div class='btn'>預定行程</div>
         <div class='btn'>登入/註冊</div>
@@ -33,20 +33,21 @@
           </div>
         </div> -->
       </div>
-      <!-- <img id='img' src='../static/img/demo.png'> -->
     </div>
     <div class='booking'>
       <div id='title'></div>
       <div id='info' class='normal_text'></div>
-      <form class='booking_form'>
+      <!-- <form class='booking_form' action='/booking' method='POST'> -->
+      <div class='booking_form'>
         <div class='form_title'>訂購導覽行程</div>
         <div class='normal_text'>以此景點為中心的一日行程，帶您探索城市角落故事</div>
         <div class='inline'>
           <div>選擇日期：</div>&nbsp
-          <input type='date'>
+          <input type='date' id='date'>
         </div>
         <div class='inline'>
           <div>選擇時間：</div>
+          <input type='hidden' name='time' id='time' value='morning'>
           <div class='radio' id='morning'>
             <div class='radio_input'>
               <div class='radio_label' id='morning_label'></div>
@@ -59,18 +60,15 @@
             </div>
             <div class='option'>下半天</div>
           </div>
-
-          <!-- <input type='radio' class='radio_input' id='morning' name='radio_group' checked>
-          <label for='morning' class='radio_label'>上半天</label>
-          <input type='radio' class='radio_input' id='afternoon' name='radio_group'>
-          <label for='afternoon' class='radio_label'>下半天</label> -->
         </div>
         <div class='inline'>
           <div>導覽費用：</div>
+          <input type='hidden' name='price' id='price' value='2000'>
           <div class='price'>&nbsp新台幣&nbsp2000&nbsp元</div>
         </div>
-        <input type='button' value='開始預訂行程'>
-      </form>
+          <button id='btn'>開始預訂行程</button>
+      </div>
+      <!-- </form> -->
     </div>
   </div>
   <div class='info_detail'>

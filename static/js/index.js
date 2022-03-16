@@ -13,9 +13,29 @@ let isLoading = false;
   </div>
 </div>
 */
+// Model: 取得景點列表
+function getAttractions(page = 0, keyword = []) {
+  if (!isLoading) {
+    isLoading = true;
+    let data = fetch(`/api/attractions?page=${page}&keyword=${keyword}`)
+      .then(response => response.json())
+      .then(results => {
+        let nextPage = results.nextpage;
+        let attractionData = results.data;
+        isLoading = false;
+        return [attractionData, nextPage];
+      })
+      .catch(error => console.log('Error: ' + error))
+    return data;
+  }
+}
+
+// View: 產生一個景點 div 區塊
 function createItem(id, imgURL, title, mrt, category) {
   let attraction = document.createElement('div');
+  // let attraction = document.createElement('a');
   attraction.className = 'attraction';
+  // attraction.href = `/attraction/${id}`
   attraction.setAttribute('onclick', `location.href='/attraction/${id}'`);
   let attraction_img = document.createElement('img');
   attraction_img.id = 'attraction_img';
@@ -39,24 +59,7 @@ function createItem(id, imgURL, title, mrt, category) {
   return attraction;
 }
 
-// 取得景點資訊
-async function getAttractions(page = 0, keyword = []) {
-  if (!isLoading) {
-    isLoading = true
-    let data = await fetch(`/api/attractions?page=${page}&keyword=${keyword}`)
-      .then(response => response.json())
-      .then(results => {
-        let nextPage = results.nextpage;
-        let attractionData = results.data;
-        return [attractionData, nextPage];
-      })
-      .catch(error => console.log('Error: ' + error))
-    isLoading = false;
-    return data;
-  }
-}
-
-// 在畫面上畫出景點 block
+// View: 根據景點列表在畫面上畫出景點區塊
 function renderAttractions(attractionData, nextPage, keyword=[]) {
   for (let i = 0; i < attractionData.length; i++) {
     let id = attractionData[i].id;
@@ -69,14 +72,10 @@ function renderAttractions(attractionData, nextPage, keyword=[]) {
   }
   if (nextPage) {
     let html = document.documentElement
-    window.onscroll = function () {
+    window.onscroll = async function () {
       if (html.scrollTop + html.clientHeight + 40 >= html.scrollHeight) {
-        getAttractions(nextPage, keyword)
-          .then(results => {
-            let attractionData = results[0];
-            let nextPage = results[1];
-            renderAttractions(attractionData, nextPage, keyword);
-          })
+        let data = await getAttractions(nextPage, keyword);
+        renderAttractions(data[0], data[1], keyword);
       }
     }
   } else {
@@ -85,37 +84,33 @@ function renderAttractions(attractionData, nextPage, keyword=[]) {
   }
 }
 
-// 進入首頁載入頁面
-function load() {
-  getAttractions()
-    .then(results => {
-      let attractionData = results[0];
-      let nextPage = results[1];
-      renderAttractions(attractionData, nextPage);
-    })
+// View: 顯示查無結果訊息
+function showMessage(keyword) {
+  let msg = document.createElement('div');
+  msg.id = 'msg';
+  attractionGroup.appendChild(msg).innerHTML = `查無「${keyword}」結果`;
+}
+
+// Controller: 頁面初始化，載入畫面
+async function load() {
+  let data = await getAttractions();
+  renderAttractions(data[0], data[1]);
 }
 
 let previousInput;
-// 輸入關鍵字
-function getKeywordAttractions() {
+// Controller: 輸入關鍵字
+async function getKeywordAttractions() {
   let keyword = inputField.value;
   if (keyword != '' && keyword != previousInput) {
     previousInput = keyword;
     attractionGroup.innerHTML = '';  // 清除原本頁面
-    getAttractions(0, keyword)
-      .then(results => {
-        let attractionData = results[0];
-        let nextPage = results[1];
-        // 沒抓到景點
-        if (!attractionData) {
-            let msg = document.createElement('div');
-            msg.id = 'msg';
-            attractionGroup.appendChild(msg).innerHTML = `查無「${keyword}」結果`;
-        } else {   // 有抓到景點
-            renderAttractions(attractionData, nextPage, keyword);
-        }
-      })
-      .catch(error => console.log('Error: ' + error))
+    let data = await getAttractions(0, keyword);
+    // 沒抓到景點
+    if (!data[0]) {
+      showMessage(keyword);
+    } else {   // 有抓到景點
+      renderAttractions(data[0], data[1], keyword);
+    }
   } else if (keyword != '' && keyword == previousInput) {
     return false;
   }

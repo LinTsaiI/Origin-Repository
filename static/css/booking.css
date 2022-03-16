@@ -30,6 +30,10 @@ body {
   margin: 10px 0;
 }
 
+.navigation > a {
+  text-decoration: none;
+}
+
 .page_name {
   text-align: left;
   margin-left: 10px;
