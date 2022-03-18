@@ -33,7 +33,6 @@ function getAttractions(page = 0, keyword = []) {
 // View: 產生一個景點 div 區塊
 function createItem(id, imgURL, title, mrt, category) {
   let attraction = document.createElement('div');
-  // let attraction = document.createElement('a');
   attraction.className = 'attraction';
   // attraction.href = `/attraction/${id}`
   attraction.setAttribute('onclick', `location.href='/attraction/${id}'`);

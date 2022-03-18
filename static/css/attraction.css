@@ -75,8 +75,8 @@ body {
   position: relative;
   flex-grow: 1;
   width: 100%;
-  text-align: center;
   top: 50%;
+  z-index: 1;
 }
 
 #left_arrow {
@@ -93,13 +93,13 @@ body {
 
 .dots {
   display: flex;
+  z-index: 2;
 }
 
 .dot_group {
   width: 12px;
   height: 12px;
   margin: 6px;
-  cursor: pointer;
 }
 
 .circle {
@@ -109,6 +109,7 @@ body {
   background-color: #FFFFFF;
   border-radius: 6px;
   text-align: center;
+  cursor: pointer;
 }
 
 .dot {

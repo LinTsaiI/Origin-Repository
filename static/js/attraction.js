@@ -1,6 +1,5 @@
 let url = window.location.href;
 let id = url.replace('http://0.0.0.0:3000/attraction/', '');
-// let id = url.substring(url.lastIndexOf('/')+1, url.length+1);
 let rightArrow = document.getElementById('right_arrow');
 let leftArrow = document.getElementById('left_arrow');
 let morning = document.getElementById('morning');
@@ -9,25 +8,30 @@ let morningLabel = document.getElementById('morning_label');
 let afternoonLabel = document.getElementById('afternoon_label');
 let btn = document.getElementById('btn');
 let data;
-let images;
 let currentPhoto = 0;
 
 // Model: 取得當前頁面的景點資訊
-function getAttractionData(id) {
+function getAttractionData() {
   return fetch(`/api/attraction/${id}`)
     .then(response => response.json())
     .then(result => {
       data = result.data;
-      images = result.data.images;
-      return [data, images];
+      return data;
     })
     .catch(error => console.log('Error: ' + error))
 }
 
 
-// View: 顯示目前圖片
+// View: 顯示目前圖片及黑點位置
 function showPhoto(index) {
-  document.querySelector('.attraction_imgs').style.backgroundImage = `url('${images[index]}')`;
+  document.querySelector('.attraction_imgs').style.backgroundImage = `url('${data.images[index]}')`;
+  let currentDot = document.getElementById('current_dot');
+  if (currentDot) {
+    currentDot.remove();
+    createDot(index);
+  } else {
+    createDot(index);
+  }
 }
 
 // View: 根據圖片總數畫出對應數量的圓點
@@ -38,8 +42,10 @@ function renderCircles(num) {
     dotGroup.className = 'dot_group';
     let circle = document.createElement('div');
     circle.className = 'circle';
-    // circle.onclick = `showPhoto(${i});`;
-    // circle.setAttribute('onclick', `showPhoto(${i});`)
+    circle.onclick = () => {
+      currentPhoto = i;
+      showPhoto(i);
+    };
     dotGroup.appendChild(circle);
     dots.appendChild(dotGroup);
   }
@@ -53,22 +59,10 @@ function createDot(index) {
   document.querySelectorAll('.circle')[index].appendChild(dot);
 }
 
-// View: 移動黑點顯示目前圖片位置
-function showCurrentDot(index) {
-  let currentDot = document.getElementById('current_dot');
-  if (currentDot) {
-    currentDot.remove();
-    createDot(index);
-  } else {
-    createDot(index);
-  }
-}
-
 // View: 畫出主畫面
 function renderAttraction() {
-  showPhoto(0);
   renderCircles(data.images.length);
-  showCurrentDot(0);
+  showPhoto(0);
   // document.getElementById('attraction_id').value = data.id;
   document.getElementById('title').innerHTML = data.name;
   if(data.mrt) {
@@ -83,21 +77,19 @@ function renderAttraction() {
 
 
 // Controller: 頁面初始化，載入畫面
-async function load(id) {
-  await getAttractionData(id);
+async function load() {
+  await getAttractionData();
   renderAttraction();
 }
 
 // Controller: 向右箭頭，顯示下一張圖片
 function nextPhoto() {
-  if (currentPhoto < images.length - 1) {
+  if (currentPhoto < data.images.length - 1) {
     currentPhoto += 1;
     showPhoto(currentPhoto);
-    showCurrentDot(currentPhoto);
   } else {
     currentPhoto = 0;
     showPhoto(currentPhoto);
-    showCurrentDot(currentPhoto);
   }
 }
 
@@ -106,11 +98,9 @@ function previousPhoto() {
   if (currentPhoto > 0) {
     currentPhoto -= 1;
     showPhoto(currentPhoto);
-    showCurrentDot(currentPhoto);
   } else {
-    currentPhoto = images.length - 1;
+    currentPhoto = data.images.length - 1;
     showPhoto(currentPhoto);
-    showCurrentDot(currentPhoto);
   }
 }
 
@@ -153,17 +143,9 @@ function showAfternoonPrice() {
 //     })
 // }
 
-window.addEventListener('load', load(id));
+window.addEventListener('load', load);
 rightArrow.addEventListener('click', nextPhoto);
 leftArrow.addEventListener('click', previousPhoto);
 morning.addEventListener('click', showMorningPrice);
 afternoon.addEventListener('click', showAfternoonPrice);
 // btn.addEventListener('click', sendBookingRequest);
-
-
-
-// let dots = document.querySelectorAll('.circle');
-// dots.forEach((element, index) => {
-//   element.addEventListener('click', showPhoto(index));
-// });
-// console.log(dots);
