@@ -1,5 +1,5 @@
 let url = window.location.href;
-let id = url.replace('http://0.0.0.0:3000/attraction/', '');
+let id = url.split('/attraction/')[1];
 let rightArrow = document.getElementById('right_arrow');
 let leftArrow = document.getElementById('left_arrow');
 let morning = document.getElementById('morning');
