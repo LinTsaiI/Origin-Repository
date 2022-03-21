@@ -51,6 +51,33 @@ INSERT INTO `attraction_imgs` VALUES (1,1,'https://www.travel.taipei/d_upload_tt
 UNLOCK TABLES;
 
 --
+-- Table structure for table `member`
+--
+
+DROP TABLE IF EXISTS `member`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `member` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `member`
+--
+
+LOCK TABLES `member` WRITE;
+/*!40000 ALTER TABLE `member` DISABLE KEYS */;
+INSERT INTO `member` VALUES (2,'Test123','test123@gmail.com','test123'),(3,'ABC','abc@gmail.com','abc'),(4,'asc','asc','asc'),(5,'123','123','123'),(6,'Test','test@gmail.com','test'),(7,'1234','1234','1234'),(8,'5678','5678','5678'),(9,'9898','9898','9898');
+/*!40000 ALTER TABLE `member` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `taipei_attractions`
 --
 
@@ -90,4 +117,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-12 10:22:38
+-- Dump completed on 2022-03-22  1:27:28
