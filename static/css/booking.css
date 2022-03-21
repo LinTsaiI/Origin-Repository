@@ -53,10 +53,18 @@ body {
   text-align: center;
 }
 
-.btn {
+.btn_container > div {
   line-height: 14px;
   margin: 10px;
   cursor: pointer;
+}
+
+#sign_btn {
+  display: none;
+}
+
+#signout {
+  display: none;
 }
 
 .main {

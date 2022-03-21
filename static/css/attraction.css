@@ -53,10 +53,18 @@ body {
   text-align: center;
 }
 
-.btn {
+.btn_container > div {
   line-height: 14px;
   margin: 10px;
   cursor: pointer;
+}
+
+#sign_btn {
+  display: block;
+}
+
+#signout {
+  display: none;
 }
 
 .attraction_imgs {
@@ -76,8 +84,7 @@ body {
   flex-grow: 1;
   width: 100%;
   top: 50%;
-  z-index: 1;
-  opacity: 0.5;
+  opacity: 0.75;
 }
 
 #left_arrow {
@@ -141,7 +148,7 @@ body {
   overflow: auto;
 }
 
-.form_title {
+.form_name {
   font-weight: bold;
   margin: 15px 20px;
 }
@@ -227,7 +234,7 @@ input[type='date']:focus {
   border-top: 1px solid #E8E8E8;
   padding: 30px 10px 60px 10px;
   margin: auto;
-  line-height: 23px;
+  line-height: 28px;
 }
 
 .info_detail > div{

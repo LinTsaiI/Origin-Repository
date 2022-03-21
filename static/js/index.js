@@ -1,18 +1,9 @@
 let attractionGroup = document.getElementById('attractions_group');
 let inputField = document.getElementById('search_field');
-let searchBtn = document.getElementById('search_btn')
+let searchBtn = document.getElementById('search_btn');
+
 let isLoading = false;
-/*
-生成一個 attraction 區塊
-<div class='attraction'>
-  <img id='attraction_img' src='../static/img/demo.png'>
-  <div id='title'>平安鐘</div>
-  <div class='info'>
-    <div id='mrt'>忠孝復興</div>
-    <div id='category'>公共藝術</div>
-  </div>
-</div>
-*/
+
 // Model: 取得景點列表
 function getAttractions(page = 0, keyword = []) {
   if (!isLoading) {
@@ -90,8 +81,10 @@ function showMessage(keyword) {
   attractionGroup.appendChild(msg).innerHTML = `查無「${keyword}」結果`;
 }
 
+
 // Controller: 頁面初始化，載入畫面
 async function load() {
+  await getUserStatus();
   let data = await getAttractions();
   renderAttractions(data[0], data[1]);
 }
@@ -114,6 +107,7 @@ async function getKeywordAttractions() {
     return false;
   }
 }
+
 
 window.addEventListener('load', load);
 searchBtn.addEventListener('click', getKeywordAttractions);

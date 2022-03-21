@@ -7,6 +7,7 @@ let afternoon = document.getElementById('afternoon');
 let morningLabel = document.getElementById('morning_label');
 let afternoonLabel = document.getElementById('afternoon_label');
 let btn = document.getElementById('btn');
+
 let data;
 let currentPhoto = 0;
 
@@ -78,6 +79,7 @@ function renderAttraction() {
 
 // Controller: 頁面初始化，載入畫面
 async function load() {
+  await getUserStatus();
   await getAttractionData();
   renderAttraction();
 }

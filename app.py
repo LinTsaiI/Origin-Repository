@@ -1,11 +1,15 @@
 from flask import *
 from routes.api_attractions import api_attractions
+from routes.api_user import api_user
+import os
 app=Flask(__name__)
+app.secret_key = os.urandom(24)
 app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['JSON_SORT_KEYS'] = False
 
 app.register_blueprint(api_attractions)
+app.register_blueprint(api_user)
 
 # Pages
 @app.route("/")
