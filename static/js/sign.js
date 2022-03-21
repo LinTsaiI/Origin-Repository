@@ -36,12 +36,12 @@ function hideModal() {
   document.querySelector('.modal_background').style.display = 'none';
   if (signInForm.style.display == 'block') {
     signInForm.style.display = 'none';
-    document.getElementById('signin_error').innerHTML = '';
+    document.getElementById('signin_error').textContent = '';
     document.getElementById('signin_email').value = '';
     document.getElementById('signin_password').value = '';
   } else if (signUpForm.style.display == 'block') {
     signUpForm.style.display = 'none';
-    document.getElementById('signup_error').innerHTML = '';
+    document.getElementById('signup_error').textContent = '';
     document.getElementById('signup_name').value = '';
     document.getElementById('signup_email').value = '';
     document.getElementById('signup_password').value = '';
@@ -53,14 +53,14 @@ function switchForm() {
   if (signInForm.style.display == 'block') {
     signInForm.style.display = 'none';
     signUpForm.style.display = 'block';
-    document.getElementById('signin_error').innerHTML = '';
+    document.getElementById('signin_error').textContent = '';
     document.getElementById('signin_email').value = '';
     document.getElementById('signin_password').value = '';
 
   } else if (signUpForm.style.display == 'block') {
     signUpForm.style.display = 'none';
     signInForm.style.display = 'block';
-    document.getElementById('signup_error').innerHTML = '';
+    document.getElementById('signup_error').textContent = '';
     document.getElementById('signup_name').value = '';
     document.getElementById('signup_email').value = '';
     document.getElementById('signup_password').value = '';
@@ -73,7 +73,7 @@ function submitSingIn() {
   let email = document.getElementById('signin_email').value;
   let password = document.getElementById('signin_password').value;
   if (email == '' | password == '') {
-    document.getElementById('signin_error').innerHTML = '請輸入帳號密碼';
+    document.getElementById('signin_error').textContent = '請輸入帳號密碼';
   } else {
     fetch('/api/user', {
       method: 'PATCH',
@@ -90,7 +90,7 @@ function submitSingIn() {
         if (result.ok) {
             window.location.reload();
         } else if (result.error) {
-          document.getElementById('signin_error').innerHTML = result.message;
+          document.getElementById('signin_error').textContent = result.message;
         }
       })
 
@@ -102,7 +102,7 @@ function submitSingUp() {
   let email = document.getElementById('signup_email').value;
   let password = document.getElementById('signup_password').value;
   if (name == '' | email == '' | password == '') {
-    document.getElementById('signup_error').innerHTML = '請輸入完整資訊';
+    document.getElementById('signup_error').textContent = '請輸入完整資訊';
   } else {
     fetch('/api/user', {
       method: 'POST',
@@ -118,14 +118,14 @@ function submitSingUp() {
       .then(response => response.json())
       .then(result => {
         if (result.ok) {
-          document.getElementById('signup_error').innerHTML = '註冊成功';
+          document.getElementById('signup_error').textContent = '註冊成功';
           name = '';
           email = '';
           password = '';
           signBtn.style.display = 'none';
           signOutBtn.style.display = 'block';
         } else if (result.error) {
-          document.getElementById('signup_error').innerHTML = result.message;
+          document.getElementById('signup_error').textContent = result.message;
         }
       })
   }

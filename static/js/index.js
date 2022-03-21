@@ -32,15 +32,15 @@ function createItem(id, imgURL, title, mrt, category) {
   attraction_img.src = imgURL;
   let titleNode = document.createElement('div');
   titleNode.id = 'title';
-  titleNode.innerHTML = title;
+  titleNode.textContent = title;
   let infoNode = document.createElement('div');
   infoNode.className = 'info';
   let mrtNode = document.createElement('div');
   mrtNode.id = 'mrt';
-  mrtNode.innerHTML = mrt;
+  mrtNode.textContent = mrt;
   let categoryNode = document.createElement('div');
   categoryNode.id = 'category';
-  categoryNode.innerHTML = category;
+  categoryNode.textContent = category;
   attraction.appendChild(attraction_img);
   attraction.appendChild(titleNode);
   attraction.appendChild(infoNode);
@@ -78,7 +78,7 @@ function renderAttractions(attractionData, nextPage, keyword=[]) {
 function showMessage(keyword) {
   let msg = document.createElement('div');
   msg.id = 'msg';
-  attractionGroup.appendChild(msg).innerHTML = `查無「${keyword}」結果`;
+  attractionGroup.appendChild(msg).textContent = `查無「${keyword}」結果`;
 }
 
 
@@ -95,7 +95,7 @@ async function getKeywordAttractions() {
   let keyword = inputField.value;
   if (keyword != '' && keyword != previousInput) {
     previousInput = keyword;
-    attractionGroup.innerHTML = '';  // 清除原本頁面
+    attractionGroup.textContent = '';  // 清除原本頁面
     let data = await getAttractions(0, keyword);
     // 沒抓到景點
     if (!data[0]) {

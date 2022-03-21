@@ -16,8 +16,13 @@ function getAttractionData() {
   return fetch(`/api/attraction/${id}`)
     .then(response => response.json())
     .then(result => {
-      data = result.data;
-      return data;
+      if (result.data) {
+        data = result.data;
+        return data;
+      } else if (result.error) {
+        data = result.message;
+        return data;
+      }
     })
     .catch(error => console.log('Error: ' + error))
 }
@@ -62,18 +67,23 @@ function createDot(index) {
 
 // View: 畫出主畫面
 function renderAttraction() {
-  renderCircles(data.images.length);
-  showPhoto(0);
-  // document.getElementById('attraction_id').value = data.id;
-  document.getElementById('title').innerHTML = data.name;
-  if(data.mrt) {
-    document.getElementById('info').innerHTML = `${data.category} at ${data.mrt}`;
+  if (data == '查無此景點') {
+    document.querySelector('.top_section').textContent = data;
+    document.querySelector('.info_detail').remove();
   } else {
-    document.getElementById('info').innerHTML = `${data.category}`;
+    renderCircles(data.images.length);
+    showPhoto(0);
+    // document.getElementById('attraction_id').value = data.id;
+    document.getElementById('title').textContent = data.name;
+    if(data.mrt) {
+      document.getElementById('info').textContent = `${data.category} at ${data.mrt}`;
+    } else {
+      document.getElementById('info').textContent = `${data.category}`;
+    }
+    document.getElementById('description').textContent = data.description;
+    document.getElementById('address').textContent = data.address;
+    document.getElementById('transport').textContent = data.transport;
   }
-  document.getElementById('description').innerHTML = data.description;
-  document.getElementById('address').innerHTML = data.address;
-  document.getElementById('transport').innerHTML = data.transport;
 }
 
 
@@ -112,7 +122,7 @@ function showMorningPrice() {
   morningLabel.style.visibility = 'visible';
   document.getElementById('time').value = 'morning';
   // document.getElementById('price').value = 2000;
-  document.querySelector('.price').innerHTML = '&nbsp新台幣&nbsp2000&nbsp元';
+  document.querySelector('.price').textContent = '&nbsp新台幣&nbsp2000&nbsp元';
 }
 
 // Controller: 顯示下半天費用
@@ -121,7 +131,7 @@ function showAfternoonPrice() {
   afternoonLabel.style.visibility = 'visible';
   document.getElementById('time').value = 'afternoon';
   // document.getElementById('price').value = 2500;
-  document.querySelector('.price').innerHTML = '&nbsp新台幣&nbsp2500&nbsp元';
+  document.querySelector('.price').textContent = '&nbsp新台幣&nbsp2500&nbsp元';
 }
 
 // function sendBookingRequest() {
