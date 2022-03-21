@@ -123,6 +123,10 @@ input[type=text] {
   font-size: 20px;
 }
 
+input[type=text]:focus {
+  outline: none;
+}
+
 #search_btn {
   width: 60px;
   height: 46px;

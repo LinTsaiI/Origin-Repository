@@ -165,8 +165,12 @@ body {
 
 input[type='date'] {
   height: 35px;
+  border: none;
 }
 
+input[type='date']:focus {
+  outline: none;
+}
 
 .radio {
   display: flex;
