@@ -9,20 +9,50 @@ let signInBtn = document.getElementById('signin_btn');
 let signUpBtn = document.getElementById('signup_btn');
 let signOutBtn = document.getElementById('signout');
 
-// Model: 確認使用者登入狀況
-function getUserStatus() {
-  fetch('/api/user', { method: 'GET' })
-    .then(response => response.json())
-    .then(result => {
-      let userData = result.data;
-      if (userData) {
-        signBtn.style.display = 'none';
-        signOutBtn.style.display = 'block';
-      } else {
-        signBtn.style.display = 'block';
-        signOutBtn.style.display = 'none';
-      }
+
+// Model: 登入系統
+function signin(email, password) {
+  return fetch('/api/user', {
+    method: 'PATCH',
+    headers: {
+      'Content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      email: email,
+      password: password
     })
+  })
+    .then(response => response.json())
+    .then(result => result)
+}
+
+// Model: 註冊系統
+function signup(name, email, password) {
+  return fetch('/api/user', {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      name: name,
+      email: email,
+      password: password
+    })
+  })
+    .then(response => response.json())
+    .then(result => result)
+}
+
+
+// View: 顯示「登入/註冊」按鈕
+function showBtn(btn) {
+  if (btn == 'signBtn') {
+    signBtn.style.display = 'block';
+    signOutBtn.style.display = 'none';
+  } else if (btn == 'signOutBtn') {
+    signBtn.style.display = 'none';
+    signOutBtn.style.display = 'block';
+  }
 }
 
 // View: 顯示登入/註冊畫面
@@ -31,20 +61,35 @@ function showModal() {
   signInForm.style.display = 'block';
 }
 
+// View: 在表單上顯示訊息
+function showFormMessage(elementId, message) {
+  document.getElementById(elementId).textContent = message;
+}
+
+// View: 清空登入表單 input value
+function clearSignInForm() {
+  document.getElementById('signin_email').value = '';
+  document.getElementById('signin_password').value = '';
+}
+
+// View: 清空註冊表單 input value
+function clearSignUpForm() {
+  document.getElementById('signup_name').value = '';
+  document.getElementById('signup_email').value = '';
+  document.getElementById('signup_password').value = '';
+}
+
 // View: 隱藏登入/註冊畫面
 function hideModal() {
   document.querySelector('.modal_background').style.display = 'none';
   if (signInForm.style.display == 'block') {
     signInForm.style.display = 'none';
-    document.getElementById('signin_error').textContent = '';
-    document.getElementById('signin_email').value = '';
-    document.getElementById('signin_password').value = '';
+    showFormMessage('signin_error', '');
+    clearSignInForm();
   } else if (signUpForm.style.display == 'block') {
     signUpForm.style.display = 'none';
-    document.getElementById('signup_error').textContent = '';
-    document.getElementById('signup_name').value = '';
-    document.getElementById('signup_email').value = '';
-    document.getElementById('signup_password').value = '';
+    showFormMessage('signup_error', '');
+    clearSignUpForm();
   }
 }
 
@@ -53,84 +98,67 @@ function switchForm() {
   if (signInForm.style.display == 'block') {
     signInForm.style.display = 'none';
     signUpForm.style.display = 'block';
-    document.getElementById('signin_error').textContent = '';
-    document.getElementById('signin_email').value = '';
-    document.getElementById('signin_password').value = '';
-
+    showFormMessage('signin_error', '');
+    clearSignInForm();
   } else if (signUpForm.style.display == 'block') {
     signUpForm.style.display = 'none';
     signInForm.style.display = 'block';
-    document.getElementById('signup_error').textContent = '';
-    document.getElementById('signup_name').value = '';
-    document.getElementById('signup_email').value = '';
-    document.getElementById('signup_password').value = '';
+    showFormMessage('signup_error', '');
+    clearSignUpForm();
   }
 }
 
 
-// 登入/登出
-function submitSingIn() {
+// Controller: 確認使用者登入狀況
+function getUserStatus() {
+  fetch('/api/user', { method: 'GET' })
+    .then(response => response.json())
+    .then(result => {
+      let userData = result.data;
+      if (userData) {
+        showBtn('signOutBtn');
+      } else {
+        showBtn('signBtn');
+      }
+    })
+}
+
+// Controller: 送出登入表單
+async function submitSingIn() {
   let email = document.getElementById('signin_email').value;
   let password = document.getElementById('signin_password').value;
   if (email == '' | password == '') {
-    document.getElementById('signin_error').textContent = '請輸入帳號密碼';
+    showFormMessage('signin_error', '請輸入帳號密碼');
   } else {
-    fetch('/api/user', {
-      method: 'PATCH',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password
-      })
-    })
-      .then(response => response.json())
-      .then(result => {
-        if (result.ok) {
-            window.location.reload();
-        } else if (result.error) {
-          document.getElementById('signin_error').textContent = result.message;
-        }
-      })
-
+    let result = await signin(email, password);
+    if (result.ok) {
+        window.location.reload();
+    } else if (result.error) {
+      showFormMessage('signin_error', result.message);
+    }
   }
 }
 
-function submitSingUp() {
+// Controller: 送出註冊表單 
+async function submitSingUp() {
   let name = document.getElementById('signup_name').value;
   let email = document.getElementById('signup_email').value;
   let password = document.getElementById('signup_password').value;
   if (name == '' | email == '' | password == '') {
-    document.getElementById('signup_error').textContent = '請輸入完整資訊';
+    showFormMessage('signup_error', '請輸入完整資訊');
   } else {
-    fetch('/api/user', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: name,
-        email: email,
-        password: password
-      })
-    })
-      .then(response => response.json())
-      .then(result => {
-        if (result.ok) {
-          document.getElementById('signup_error').textContent = '註冊成功';
-          name = '';
-          email = '';
-          password = '';
-          signBtn.style.display = 'none';
-          signOutBtn.style.display = 'block';
-        } else if (result.error) {
-          document.getElementById('signup_error').textContent = result.message;
-        }
-      })
+    let result = await signup(name, email, password);
+    if (result.ok) {
+      clearSignUpForm();
+      showFormMessage('signup_error', '註冊成功');
+      showBtn('signOutBtn');
+    } else if (result.error) {
+      showFormMessage('signup_error', result.message);
+    }
   }
 }
 
+// Controller: 登出系統
 function signOut() {
   fetch('/api/user', { method: 'DELETE' })
     .then(response => response.json())
@@ -141,7 +169,6 @@ function signOut() {
     })
 }
 
-// 登入/登出
 signBtn.addEventListener('click', showModal);
 closeSignIn.addEventListener('click', hideModal);
 closeSignUp.addEventListener('click', hideModal);

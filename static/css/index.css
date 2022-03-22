@@ -69,7 +69,7 @@ button {
 }
 
 #sign_btn {
-  display: block;
+  display: none;
 }
 
 #signout {
