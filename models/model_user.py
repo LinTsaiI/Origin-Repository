@@ -24,7 +24,7 @@ def get_user_id(email):
   db = connection_pool.get_connection()
   cursor = db.cursor()
   cursor.execute('SELECT id FROM member WHERE email=%s;', (email,))
-  id = cursor.fetchone()
+  id = cursor.fetchone()[0]
   cursor.close()
   db.close()
   return id

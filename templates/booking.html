@@ -7,20 +7,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel='shortcut icon' href='#' />
   <title>台北一日遊</title>
+  <link rel='stylesheet' href='../static/css/nav.css' type='text/css'>
   <link rel='stylesheet' href='../static/css/booking.css' type='text/css'>
 </head>
 
 <body>
-  <div class='navigation_block'>
-    <div class='navigation'>
-      <a href='/'><div class='page_name'>台北一日遊</div></a>
-      <div class='btn_container'>
-        <div id='booking_btn'>預定行程</div>
-        <div id='sign_btn'>登入/註冊</div>
-        <div id='signout'>登出系統</div>
-      </div>
-    </div>
-  </div>
+  <nav-component></nav-component>
   <div class='main'>
     <div class='head headline'>您好，Yakko，待預訂的行程如下：</div>
     <div class='content'>
@@ -68,8 +60,13 @@
       <input type='button' value='確認訂購並付款' class='enter'>
     </div>
   </div>
-  <div id='footer'>COPYRIGHT © 2021 台北一日遊</div>
-  <!-- <script type='text/javascript' src='../static/js/index.js'></script> -->
+  <modal-component></modal-component>
+  <!-- <div id='footer'>COPYRIGHT © 2021 台北一日遊</div> -->
+  <script type='text/javascript' src='../static/js/components/nav.js'></script>
+  <script type='text/javascript' src='../static/js/components/sign_modal.js'></script>
+  <script type='text/javascript' src='../static/js/components/footer.js'></script>
+  <script type='text/javascript' src='../static/js/sign.js'></script>
+  <!-- <script type='text/javascript' src='../static/js/booking.js'></script> -->
 </body>
 
 </html>

@@ -15,7 +15,7 @@ function signin(email, password) {
   return fetch('/api/user', {
     method: 'PATCH',
     headers: {
-      'Content-type': 'application/json'
+      'Content-type': 'application/json',
     },
     body: JSON.stringify({
       email: email,
@@ -84,11 +84,11 @@ function hideModal() {
   document.querySelector('.modal_background').style.display = 'none';
   if (signInForm.style.display == 'block') {
     signInForm.style.display = 'none';
-    showFormMessage('signin_error', '');
+    showFormMessage('signin_msg', '');
     clearSignInForm();
   } else if (signUpForm.style.display == 'block') {
     signUpForm.style.display = 'none';
-    showFormMessage('signup_error', '');
+    showFormMessage('signup_msg', '');
     clearSignUpForm();
   }
 }
@@ -98,12 +98,12 @@ function switchForm() {
   if (signInForm.style.display == 'block') {
     signInForm.style.display = 'none';
     signUpForm.style.display = 'block';
-    showFormMessage('signin_error', '');
+    showFormMessage('signin_msg', '');
     clearSignInForm();
   } else if (signUpForm.style.display == 'block') {
     signUpForm.style.display = 'none';
     signInForm.style.display = 'block';
-    showFormMessage('signup_error', '');
+    showFormMessage('signup_msg', '');
     clearSignUpForm();
   }
 }
@@ -128,13 +128,13 @@ async function submitSingIn() {
   let email = document.getElementById('signin_email').value;
   let password = document.getElementById('signin_password').value;
   if (email == '' | password == '') {
-    showFormMessage('signin_error', '請輸入帳號密碼');
+    showFormMessage('signin_msg', '請輸入帳號密碼');
   } else {
     let result = await signin(email, password);
     if (result.ok) {
         window.location.reload();
     } else if (result.error) {
-      showFormMessage('signin_error', result.message);
+      showFormMessage('signin_msg', result.message);
     }
   }
 }
@@ -145,15 +145,15 @@ async function submitSingUp() {
   let email = document.getElementById('signup_email').value;
   let password = document.getElementById('signup_password').value;
   if (name == '' | email == '' | password == '') {
-    showFormMessage('signup_error', '請輸入完整資訊');
+    showFormMessage('signup_msg', '請輸入完整資訊');
   } else {
     let result = await signup(name, email, password);
     if (result.ok) {
       clearSignUpForm();
-      showFormMessage('signup_error', '註冊成功');
+      showFormMessage('signup_msg', '註冊成功');
       showBtn('signOutBtn');
     } else if (result.error) {
-      showFormMessage('signup_error', result.message);
+      showFormMessage('signup_msg', result.message);
     }
   }
 }

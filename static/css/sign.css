@@ -9,6 +9,7 @@ body {
   height: 100vh;
   top: 0;
   display: none;
+  z-index: 2;
 }
 
 #signin_form {
