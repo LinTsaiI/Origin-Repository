@@ -6,8 +6,9 @@ let morning = document.getElementById('morning');
 let afternoon = document.getElementById('afternoon');
 let morningLabel = document.getElementById('morning_label');
 let afternoonLabel = document.getElementById('afternoon_label');
-let btn = document.getElementById('btn');
+let startBookingBtn = document.getElementById('start_booking_btn');
 
+let userData;
 let data;
 let currentPhoto = 0;
 
@@ -27,6 +28,61 @@ function getAttractionData() {
     .catch(error => console.log('Error: ' + error))
 }
 
+// Model: 確認是否已有預定的行程
+function checkBookingStatus() {
+  return fetch('/api/booking', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  })
+    .then(response => response.json())
+    .then(result => result)
+}
+
+// Model: 建立一個預定行程
+function createBooking() {
+  return fetch('/api/booking', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        attractionId: id,
+        date: document.getElementById('date').value,
+        time: document.getElementById('time').value,
+        price: document.getElementById('price').value
+    })
+  })
+    .then(response => response.json())
+    .then(result => {
+      if(result.ok) {
+        window.location.href = '/booking';
+      } else if(result.error) {
+        if(result.message == '未登入') {
+          showModal();
+        } else {
+          document.getElementById('booking_error_msg').textContent = result.message;
+        }
+      }
+    })
+}
+
+// Model: 取代已預定的行程
+function replaceBooking() {
+  fetch('/api/booking', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => response.json())
+    .then(result => {
+      if(result.ok) {
+        createBooking();
+      }
+    })
+}
 
 // View: 顯示目前圖片及黑點位置
 function showPhoto(index) {
@@ -73,7 +129,6 @@ function renderAttraction() {
   } else {
     renderCircles(data.images.length);
     showPhoto(0);
-    // document.getElementById('attraction_id').value = data.id;
     document.getElementById('title').textContent = data.name;
     if(data.mrt) {
       document.getElementById('info').textContent = `${data.category} at ${data.mrt}`;
@@ -89,7 +144,8 @@ function renderAttraction() {
 
 // Controller: 頁面初始化，載入畫面
 async function load() {
-  await getUserStatus();
+  userData = await getUserStatus();
+  showBtn(userData);
   await getAttractionData();
   renderAttraction();
 }
@@ -120,44 +176,38 @@ function previousPhoto() {
 function showMorningPrice() {
   afternoonLabel.style.visibility = 'hidden';
   morningLabel.style.visibility = 'visible';
+  document.getElementById('price').value = '2000';
   document.getElementById('time').value = 'morning';
-  // document.getElementById('price').value = 2000;
-  document.querySelector('.price').textContent = '&nbsp新台幣&nbsp2000&nbsp元';
+  document.querySelector('.price').textContent = ' 新台幣 2000 元';
 }
 
 // Controller: 顯示下半天費用
 function showAfternoonPrice() {
   morningLabel.style.visibility = 'hidden';
   afternoonLabel.style.visibility = 'visible';
+  document.getElementById('price').value = '2500';
   document.getElementById('time').value = 'afternoon';
-  // document.getElementById('price').value = 2500;
-  document.querySelector('.price').textContent = '&nbsp新台幣&nbsp2500&nbsp元';
+  document.querySelector('.price').textContent = ' 新台幣 2500 元';
 }
 
-// function sendBookingRequest() {
-//   fetch('/api/booking', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify({
-//         "attractionId": data.id,
-//         "date": document.getElementById('date').value,
-//         "time": document.getElementById('time').value,
-//         "price": document.getElementById('price').value
-//     })
-//   })
-//     .then(response => response.json())
-//     .then(result => {
-//       if(result.ok) {
-//         window.location.href = '/booking';
-//       }
-//     })
-// }
+// Controller: 開始預定行程
+async function startBooking() {
+  if(!userData) {
+    showModal();
+  } else {
+    let bookingStatus = await checkBookingStatus();
+    if(!bookingStatus.data) {
+      createBooking();
+    } else {
+      replaceBooking();
+    }
+  }
+}
+
 
 window.addEventListener('load', load);
 rightArrow.addEventListener('click', nextPhoto);
 leftArrow.addEventListener('click', previousPhoto);
 morning.addEventListener('click', showMorningPrice);
 afternoon.addEventListener('click', showAfternoonPrice);
-// btn.addEventListener('click', sendBookingRequest);
+startBookingBtn.addEventListener('click', startBooking);

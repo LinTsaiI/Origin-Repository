@@ -1,6 +1,5 @@
 from flask import Blueprint, request, jsonify, make_response, session
 from models.model_user import is_member, create_user, get_user_id, authenticate_user
-from models.db_pool import connection_pool
 api_user = Blueprint('api_user', __name__)
 
 

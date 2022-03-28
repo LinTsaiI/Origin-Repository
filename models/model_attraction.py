@@ -38,7 +38,9 @@ def get_attraction(attractionId):
   cursor = db.cursor()
   cursor.execute('''
       SELECT taipei_attractions.*,
-            (SELECT GROUP_CONCAT(url) FROM attraction_imgs GROUP BY attraction_id HAVING attraction_id=taipei_attractions.id) AS images
+            (SELECT GROUP_CONCAT(url) FROM attraction_imgs GROUP BY attraction_id
+            HAVING attraction_id=taipei_attractions.id)
+            AS images
       FROM taipei_attractions
       WHERE taipei_attractions.id=%s;
     ''', (attractionId,))

@@ -15,7 +15,7 @@ cursor = db.cursor()
 # cursor.execute('''
 #   CREATE TABLE taipei_attractions(
 #     id BIGINT PRIMARY KEY AUTO_INCREMENT,
-#     name VARCHAR(255),
+#     name VARCHAR(255) UNIQUE,
 #     category VARCHAR(255),
 #     description TEXT,
 #     address VARCHAR(255),
@@ -65,17 +65,32 @@ cursor = db.cursor()
 #       )
 
 
-# 新增會員資料表格
+# 新增會員資料表格 (member)
+# cursor.execute('''
+#   CREATE TABLE member(
+#     id BIGINT PRIMARY KEY AUTO_INCREMENT,
+#     name VARCHAR(255) NOT NULL,
+#     email VARCHAR(255) NOT NULL UNIQUE,
+#     password VARCHAR(255) NOT NULL
+# )''')
+
+# 新增紀錄使用者訂單的表格 (booking)
 cursor.execute('''
-  CREATE TABLE member(
+  CREATE TABLE booking(
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL
-)''')
-
-
+    email VARCHAR(255) NOT NULL,
+    attraction_id BIGINT NOT NULL,
+    date DATE NOT NULL,
+    time VARCHAR(20) NOT NULL,
+    price INT NOT NULL,
+    FOREIGN KEY (attraction_id) REFERENCES taipei_attractions(id),
+    INDEX (email)
+  );
+''')
 
 cursor.close()
 db.commit()
 db.close()
+
+# FOREIGN KEY(email) REFERENCES member(email) ON DELETE CASCADE,

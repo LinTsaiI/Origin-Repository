@@ -7,13 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel='shortcut icon' href='#' />
   <title>台北一日遊</title>
-  <link rel='stylesheet' href='../static/css/nav.css' type='text/css'>
-  <link rel='stylesheet' href='../static/css/sign.css' type='text/css'>
+  <link rel='stylesheet' href='../static/css/shared.css' type='text/css'>
   <link rel='stylesheet' href='../static/css/attraction.css' type='text/css'>
 </head>
 
 <body>
-  <nav-component></nav-component>
+  {% include "/shared/nav.html" %}
+
   <div class='top_section'>
     <div class='attraction_imgs'>
       <diV class='arrow'>
@@ -28,16 +28,15 @@
         </div> -->
       </div>
     </div>
-    <div class='booking'>
+    <form class='booking'>
       <div id='title'></div>
       <div id='info' class='normal_text'></div>
-      <!-- <form class='booking_form' action='/booking' method='POST'> -->
       <div class='booking_form'>
         <div class='form_name'>訂購導覽行程</div>
         <div class='normal_text'>以此景點為中心的一日行程，帶您探索城市角落故事</div>
         <div class='inline'>
           <div>選擇日期：</div>&nbsp
-          <input type='date' id='date'>
+          <input type='date' id='date' name='date'>
         </div>
         <div class='inline'>
           <div>選擇時間：</div>
@@ -60,10 +59,9 @@
           <input type='hidden' name='price' id='price' value='2000'>
           <div class='price'>&nbsp新台幣&nbsp2000&nbsp元</div>
         </div>
-          <button id='btn'>開始預訂行程</button>
+        <button type='button' id='start_booking_btn'>開始預訂行程</button><span id='booking_error_msg'></span>
       </div>
-      <!-- </form> -->
-    </div>
+    </form>
   </div>
   <div class='info_detail'>
     <div id='description'></div>
@@ -79,11 +77,10 @@
         </div>
     </div>
   </div>
-  <modal-component></modal-component>
-  <!-- <div id='footer'>COPYRIGHT © 2021 台北一日遊</div> -->
-  <script type='text/javascript' src='../static/js/components/nav.js'></script>
-  <script type='text/javascript' src='../static/js/components/sign_modal.js'></script>
-  <script type='text/javascript' src='../static/js/components/footer.js'></script>
+  {% include "/shared/sign_modals.html" %}
+  
+  {% include "/shared/footer.html" %}
+
   <script type='text/javascript' src='../static/js/sign.js'></script>
   <script type='text/javascript' src='../static/js/attraction.js'></script>
 </body>

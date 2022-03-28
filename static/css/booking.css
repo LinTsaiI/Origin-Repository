@@ -13,126 +13,257 @@ body {
   box-sizing: border-box;
 }
 
-.main {
-  width: 1200px;
-  margin: 94px auto 40px auto;
-
+.booking_content {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #E8E8E8;
 }
 
-.head {
+
+.info_head {
   font-weight: bold;
   font-size: 19px;
 }
 
-.headline {
-  margin: 40px auto 35px 100px;
-}
-
-.content {
-  width: 100%;
-  display: flex;
-  padding: 0 100px 40px 100px;
-  border-bottom: 1px solid #E8E8E8;
-}
-
-.attraction_img {
-  width: 250px;
-  height: 200px;
-}
-
-.detail {
-  position: relative;
-  width: 700px;
-  margin-left: 22px;
-}
-
 .delete {
   position: absolute;
-  top: 0px;
-  right: 0px;
   cursor: pointer;
   width: 30px;
   height: 30px;
 }
 
-.topic {
+.destination {
   font-weight: bold;
   color: #448899;
 }
 
-.bold {
+.style_bold {
   font-weight: bold;
 }
 
-.inline {
+.style_inline {
   display: flex;
+  margin: 20px 0;
 }
 
-.contact {
-  width: 100%;
+.contact_info {
   border-bottom: 1px solid #E8E8E8;
-  padding: 40px 100px;
 }
 
-.input {
+.booking_input {
   width: 200px;
   height: 38px;
 }
 
 input[type='text'] {
   margin: 10px auto 10px 10px;
+  border: 1px solid #E8E8E8;
+  padding: 10px;
+  font-size: 16px;
 }
 
-.payment {
-  width: 100%;
+.payment_info {
   border-bottom: 1px solid #E8E8E8;
-  padding: 40px 100px;
 }
 
 .confirm {
-  padding: 40px 110px;
+  position: relative;
+  height: 280px;
 }
 
-.total {
+.total_price {
+  position: absolute;
   display: flex;
-  margin: 0 0 0 auto;
   font-weight: bold;
 }
 
-.enter {
+#confirm_btn {
+  position: absolute;
+  cursor: pointer;
+  margin-top: 40px;
+  padding: 10px 20px;
   font-size: 19px;
   color: #FFFFFF;
   border: 0;
   background: #448899;
   border-radius: 5px;
-  padding: 10px 20px;
-  margin: 25px 0 22px auto;
 }
 
 #footer {
-  width: 100%;
-  font-weight: bold;
-  color: #FFFFFF;
-  text-align: center;
-  background: #757575;
-  line-height: 104px;
-  margin-bottom: end;
   bottom: 0;
 }
 
 /* 桌機筆電 (> 1200px) */
 @media all and (min-width: 1200.01px) {
+  .booking_main {
+    width: 1200px;
+    margin: 54px auto 0 auto;
+  }
 
+  .headline {
+    margin: 0 auto 35px 110px;
+    padding-top: 40px;
+  }
+
+  #headline_rest {
+    width: 100%;
+  }
+
+  #booking_msg {
+    margin-left: 110px;
+  }
+
+  .booking_content {
+    width: 100%;
+    padding: 0 110px 40px 110px;
+  }
+
+  .attraction_img {
+    width: 250px;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .booking_detail {
+    width: 700px;
+    margin-left: 22px;
+  }
+
+  .delete {
+    top: 0px;
+    right: 110px;
+  }
+
+  .contact_info {
+    width: 100%;
+    padding: 20px 110px;
+  }
+
+  .payment_info {
+    width: 100%;
+    padding: 20px 110px 40px 110px;
+  }
+
+  .confirm {
+    width: 100%;
+    padding: 40px 110px;
+  }
+
+  .total_price, #confirm_btn {
+    right: 110px;
+  }
 }
 
 /* 平板 (<=1200px, > 600px)*/
 @media all and (max-width: 1200px) {
+  .booking_main {
+    width: 100vw;
+    margin: 54px auto 0 auto;
+    padding: 0;
+  }
 
+  .headline {
+    margin: 0 40px 35px 40px;
+    padding-top: 40px;
+  }
+
+  .attraction_img {
+    width: 35vw;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .booking_content {
+    padding: 0 0 40px 0;
+  }
+
+  .booking_detail {
+    width: auto;
+    margin-left: 22px;
+  }
+
+  .delete {
+    top: 0px;
+    right: 0px;
+  }
+
+  .contact_info, .payment_info {
+    padding: 40px 20px;
+  }
+
+  .confirm {
+    padding: 40px 0 0 0;
+  }
+
+  .total_price, #confirm_btn {
+    right: 0;
+  }
+
+  #headline_rest {
+    width: auto;
+    margin: 0 40px;
+  }
 }
 
 /* 行動裝置 (<= 600px, min 360px) */
 @media all and (max-width: 600px) {
-  #footer {
-    margin-top: 15px;
+  .booking_main {
+    width: 100vw;
+    padding: 0 10px;
+    margin-bottom: 0;
+  }
+
+  .headline {
+    width: 100%;
+    margin: 40px 0 35px 0;
+  }
+
+  .booking_content {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .attraction_img {
+    width: 100%;
+    height: 75%;
+    object-fit: cover;
+    margin-bottom: 35px;
+  }
+
+  .booking_detail {
+    width: 100%;
+    margin-bottom: 35px;
+    margin-left: 0;
+  }
+
+  .delete {
+    top: auto;
+    bottom: 30px;
+    right: 0px;
+  }
+
+  .contact_info {
+    margin: 0;
+    padding: 20px 0;
+  }
+
+  .payment_info {
+    margin: 0;
+    padding: 20px 0 40px 0;
+  }
+
+  .confirm {
+    margin: 0;
+    padding: 40px 0 0 0;
+  }
+
+  .total_price, #confirm_btn {
+    right: 0;
+  }
+
+  #headline_rest {
+    margin: 0;
   }
 }

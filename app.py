@@ -1,6 +1,7 @@
 from flask import *
 from routes.api_attractions import api_attractions
 from routes.api_user import api_user
+from routes.api_booking import api_booking
 import os
 app=Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -10,6 +11,7 @@ app.config['JSON_SORT_KEYS'] = False
 
 app.register_blueprint(api_attractions)
 app.register_blueprint(api_user)
+app.register_blueprint(api_booking)
 
 # Pages
 @app.route("/")

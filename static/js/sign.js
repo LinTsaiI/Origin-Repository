@@ -8,6 +8,7 @@ let switchSignInBtn = document.getElementById('switch_signin');
 let signInBtn = document.getElementById('signin_btn');
 let signUpBtn = document.getElementById('signup_btn');
 let signOutBtn = document.getElementById('signout');
+let showBookingInfoBtn = document.getElementById('booking_btn');
 
 
 // Model: 登入系統
@@ -45,13 +46,13 @@ function signup(name, email, password) {
 
 
 // View: 顯示「登入/註冊」按鈕
-function showBtn(btn) {
-  if (btn == 'signBtn') {
-    signBtn.style.display = 'block';
-    signOutBtn.style.display = 'none';
-  } else if (btn == 'signOutBtn') {
+function showBtn(userData) {
+  if (userData) {
     signBtn.style.display = 'none';
     signOutBtn.style.display = 'block';
+  } else {
+    signBtn.style.display = 'block';
+    signOutBtn.style.display = 'none';
   }
 }
 
@@ -84,10 +85,12 @@ function hideModal() {
   document.querySelector('.modal_background').style.display = 'none';
   if (signInForm.style.display == 'block') {
     signInForm.style.display = 'none';
+    signInForm.classList.add('transition-in');
     showFormMessage('signin_msg', '');
     clearSignInForm();
   } else if (signUpForm.style.display == 'block') {
     signUpForm.style.display = 'none';
+    signInForm.classList.add('transition-in');
     showFormMessage('signup_msg', '');
     clearSignUpForm();
   }
@@ -98,6 +101,7 @@ function switchForm() {
   if (signInForm.style.display == 'block') {
     signInForm.style.display = 'none';
     signUpForm.style.display = 'block';
+    signInForm.classList.remove('transition-in');
     showFormMessage('signin_msg', '');
     clearSignInForm();
   } else if (signUpForm.style.display == 'block') {
@@ -108,18 +112,19 @@ function switchForm() {
   }
 }
 
+// View: 關閉登入/註冊視窗，觸發 animation
+function transitionOut() {
+  signInForm.classList.add('transition-out');
+}
+
 
 // Controller: 確認使用者登入狀況
 function getUserStatus() {
-  fetch('/api/user', { method: 'GET' })
+  return fetch('/api/user', { method: 'GET' })
     .then(response => response.json())
     .then(result => {
-      let userData = result.data;
-      if (userData) {
-        showBtn('signOutBtn');
-      } else {
-        showBtn('signBtn');
-      }
+      userData = result.data;
+      return userData;
     })
 }
 
@@ -151,7 +156,8 @@ async function submitSingUp() {
     if (result.ok) {
       clearSignUpForm();
       showFormMessage('signup_msg', '註冊成功');
-      showBtn('signOutBtn');
+      userData = await getUserStatus();
+      showBtn(userData);
     } else if (result.error) {
       showFormMessage('signup_msg', result.message);
     }
@@ -169,6 +175,15 @@ function signOut() {
     })
 }
 
+// Controller: 顯示預定行程
+function showBookingInfo() {
+  if(signBtn.style.display == 'block') {
+    showModal();
+  } else if(signOutBtn.style.display == 'block') {
+    window.location.href = '/booking';
+  }
+}
+
 signBtn.addEventListener('click', showModal);
 closeSignIn.addEventListener('click', hideModal);
 closeSignUp.addEventListener('click', hideModal);
@@ -177,3 +192,4 @@ switchSignInBtn.addEventListener('click', switchForm);
 signInBtn.addEventListener('click', submitSingIn);
 signUpBtn.addEventListener('click', submitSingUp);
 signOutBtn.addEventListener('click', signOut);
+showBookingInfoBtn.addEventListener('click', showBookingInfo);

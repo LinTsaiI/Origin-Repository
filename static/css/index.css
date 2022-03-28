@@ -8,11 +8,6 @@ body {
   position: relative;
 }
 
-#content {
-  height: 100vh;
-  overflow: scroll;
-}
-
 button {
   cursor: pointer;
 }
@@ -102,12 +97,6 @@ input[type=text]:focus {
   margin: 40px 0;
 }
 
-#msg {
-  margin: 15px;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
 .attraction {
   border: 1px solid #E8E8E8;
   box-sizing: border-box;
@@ -141,16 +130,6 @@ input[type=text]:focus {
   color: #757575;
 }
 
-/* #footer {
-  width: 100%;
-  font-weight: bold;
-  color: #FFFFFF;
-  text-align: center;
-  background: #757575;
-  line-height: 104px;
-  position: absolute;
-  margin-bottom: end;
-} */
 
 /* 桌機筆電 (> 1200px) */
 @media all and (min-width: 1200.01px) {
@@ -222,7 +201,6 @@ input[type=text]:focus {
   .attraction > img {
     height: 30vw;
   }
-
 }
 
 /* 行動裝置 (<= 600px, min 360px) */
@@ -260,9 +238,5 @@ input[type=text]:focus {
 
   .attraction > img {
     height: 60vw;
-  }
-
-  #footer {
-    margin-top: 15px;
   }
 }

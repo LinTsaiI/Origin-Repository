@@ -18,6 +18,7 @@ def create_user(name, email, password):
   cursor.close()
   db.commit()
   db.close()
+  
 
 # Model: 取得 user id
 def get_user_id(email):
@@ -33,7 +34,7 @@ def get_user_id(email):
 def authenticate_user(email, password):
   db = connection_pool.get_connection()
   cursor = db.cursor()
-  cursor.execute('SELECT id, email, password FROM member WHERE email=%s AND password=%s;', (email, password))
+  cursor.execute('SELECT id, name, email, password FROM member WHERE email=%s AND password=%s;', (email, password))
   data = cursor.fetchone()
   cursor.close()
   db.close()

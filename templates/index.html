@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel='shortcut icon' href='#' />
   <title>台北一日遊</title>
-  <link rel='stylesheet' href='../static/css/nav.css' type='text/css'>
-  <link rel='stylesheet' href='../static/css/sign.css' type='text/css'>
+  <link rel='stylesheet' href='../static/css/shared.css' type='text/css'>
   <link rel='stylesheet' href='../static/css/index.css' type='text/css'>
 </head>
 <body>
-  <nav-component></nav-component>
+  {% include "/shared/nav.html" %}
+
   <div class='hero_section'>
     <div class='hero'>
       <div class='slogan_content'>
@@ -38,11 +38,10 @@
       </div> -->
     </div>
   </div>
-  <modal-component></modal-component>
-  <!-- <div id='footer'>COPYRIGHT © 2021 台北一日遊</div> -->
-  <script type='text/javascript' src='../static/js/components/nav.js'></script>
-  <script type='text/javascript' src='../static/js/components/sign_modal.js'></script>
-  <script type='text/javascript' src='../static/js/components/footer.js'></script>
+  {% include "/shared/sign_modals.html" %}
+
+  {% include "/shared/footer.html" %}
+
   <script type='text/javascript' src='../static/js/sign.js'></script>
   <script type='text/javascript' src='../static/js/index.js'></script>
 </body>

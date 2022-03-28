@@ -176,6 +176,10 @@ input[type='date']:focus {
   font-weight: normal;
 }
 
+#booking_error_msg {
+  color: red;
+}
+
 .info_detail {
   border-top: 1px solid #E8E8E8;
   padding: 30px 10px 60px 10px;
@@ -191,17 +195,6 @@ input[type='date']:focus {
  margin: 20px 0 5px 0;
  font-weight: bold;
 }
-
-/* #footer {
-  width: 100%;
-  font-weight: bold;
-  color: #FFFFFF;
-  text-align: center;
-  background: #757575;
-  line-height: 104px;
-  margin-bottom: end;
-  bottom: 0;
-} */
 
 /* 桌機筆電 (> 1200px) */
 @media all and (min-width: 1200px) {

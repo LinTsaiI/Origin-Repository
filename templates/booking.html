@@ -7,66 +7,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel='shortcut icon' href='#' />
   <title>台北一日遊</title>
-  <link rel='stylesheet' href='../static/css/nav.css' type='text/css'>
+  <link rel='stylesheet' href='../static/css/shared.css' type='text/css'>
   <link rel='stylesheet' href='../static/css/booking.css' type='text/css'>
 </head>
 
 <body>
-  <nav-component></nav-component>
-  <div class='main'>
-    <div class='head headline'>您好，Yakko，待預訂的行程如下：</div>
-    <div class='content'>
-      <img class='attraction_img' src='../static/img/demo.png'>
-      <div class='detail'>
-        <img class='delete' src='../static/img/icon_delete.png'>
-        <div class='topic'>台北一日遊：平安鐘</div>
-        <div class='inline'>
-          <div class='bold'>日期： </div>
-          <div id='date'>2021-04-23</div>
+  {% include "/shared/nav.html" %}
+
+  <div class='booking_main'>
+    <div class='info_head headline'>您好，<span id='member_name'></span>，待預訂的行程如下：</div>
+    <div id='headline_rest'>
+      <div class='booking_content'>
+        <img class='attraction_img' id='attraction_cover'>
+        <div class='booking_detail'>
+          <div class='destination'>台北一日遊：<span id='attraction_name'></span></div>
+          <div class='style_inline'>
+            <div class='style_bold'>日期： </div>
+            <div id='date'></div>
+          </div>
+          <div class='style_inline'>
+            <div class='style_bold'>時間： </div>
+            <div id='time'></div>
+          </div>
+          <div class='style_inline'>
+            <div class='style_bold'>費用： </div>
+            <div>新台幣 <span id='price'></span> 元</div>
+          </div>
+          <div class='style_inline'>
+            <div class='style_bold'>地點： </div>
+            <div id='place'></div>
+          </div>
         </div>
-        <div class='inline'>
-          <div class='bold'>時間： </div>
-          <div id='time'>早上 9 點到下午 4 點</div>
-        </div>
-        <div class='inline'>
-          <div class='bold'>費用： </div>
-          <div id='price'>新台幣 2000 元</div>
-        </div>
-        <div class='inline'>
-          <div class='bold'>地點： </div>
-          <div id='place'>臺北市 大安區忠孝東路4段</div>
-        </div>
+        <img class='delete' src='../static/img/icon_delete.png' id='delete_btn'>
       </div>
-    </div>
-    <div class='contact'>
-      <div class='head'>您的聯絡資訊</div>
-      <form>
-        聯絡姓名：<input type='text' class='input'><br>
-        連絡信箱：<input type='text' class='input'><br>
-        手機號碼：<input type='text' class='input'>
-        <div class='bold'>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
-      </form>
-    </div>
-    <div class='payment'>
-      <div class='head'>信用卡付款資訊</div>
-      卡片號碼：<input type='text' class='input' placeholder='**** **** **** ****'><br>
-      過期時間：<input type='text' class='input' placeholder='MM/YY'><br>
-      驗證密碼：<input type='text' class='input' placeholder='CVV'>
-    </div>
-    <div class='confirm'>
-      <div class='total'>
-        總價：<div class='bold'>新台幣 2000 元</div>
+      <div class='contact_info'>
+        <div class='info_head style_inline'>您的聯絡資訊</div>
+          聯絡姓名：<input type='text' class='booking_input' id='contact_name'><br>
+          連絡信箱：<input type='text' class='booking_input' id='contact_email'><br>
+          手機號碼：<input type='text' class='booking_input' id='contact_phone'>
+          <div class='style_bold style_inline'>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
       </div>
-      <input type='button' value='確認訂購並付款' class='enter'>
+      <div class='payment_info'>
+        <div class='info_head style_inline'>信用卡付款資訊</div>
+        卡片號碼：<input type='text' class='booking_input' placeholder='**** **** **** ****' id='payment_credit_card'><br>
+        過期時間：<input type='text' class='booking_input' placeholder='MM/YY' id='payment_expiry_date'><br>
+        驗證密碼：<input type='text' class='booking_input' placeholder='CVV' id='payment_auth_number'>
+      </div>
+      <div class='confirm'>
+        <div class='total_price'>
+          總價：<div class='style_bold'>新台幣 <span id='total_price'></span> 元</div>
+        </div>
+        <input type='button' value='確認訂購並付款' class='enter' id='confirm_btn'>
+      </div>
     </div>
   </div>
-  <modal-component></modal-component>
-  <!-- <div id='footer'>COPYRIGHT © 2021 台北一日遊</div> -->
-  <script type='text/javascript' src='../static/js/components/nav.js'></script>
-  <script type='text/javascript' src='../static/js/components/sign_modal.js'></script>
-  <script type='text/javascript' src='../static/js/components/footer.js'></script>
+  {% include "/shared/sign_modals.html" %}
+  
+  {% include "/shared/footer.html" %}
+
   <script type='text/javascript' src='../static/js/sign.js'></script>
-  <!-- <script type='text/javascript' src='../static/js/booking.js'></script> -->
+  <script type='text/javascript' src='../static/js/booking.js'></script>
 </body>
 
 </html>

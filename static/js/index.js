@@ -61,7 +61,7 @@ function renderAttractions(attractionData, nextPage, keyword=[]) {
     attractionGroup.appendChild(attraction);
   }
   if (nextPage) {
-    let html = document.documentElement
+    let html = document.documentElement;
     window.onscroll = async function () {
       if (html.scrollTop + html.clientHeight + 40 >= html.scrollHeight) {
         let data = await getAttractions(nextPage, keyword);
@@ -84,7 +84,8 @@ function showMessage(keyword) {
 
 // Controller: 頁面初始化，載入畫面
 async function load() {
-  await getUserStatus();
+  let userData = await getUserStatus();
+  showBtn(userData);
   let data = await getAttractions();
   renderAttractions(data[0], data[1]);
 }
