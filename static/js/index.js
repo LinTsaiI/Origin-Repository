@@ -3,21 +3,20 @@ let inputField = document.getElementById('search_field');
 let searchBtn = document.getElementById('search_btn');
 
 let isLoading = false;
+let data;
 
 // Model: 取得景點列表
 function getAttractions(page = 0, keyword = []) {
   if (!isLoading) {
     isLoading = true;
-    let data = fetch(`/api/attractions?page=${page}&keyword=${keyword}`)
+    return fetch(`/api/attractions?page=${page}&keyword=${keyword}`)
       .then(response => response.json())
       .then(results => {
-        let nextPage = results.nextpage;
-        let attractionData = results.data;
+        data = [results.data, results.nextpage];
         isLoading = false;
-        return [attractionData, nextPage];
+        return data;
       })
       .catch(error => console.log('Error: ' + error))
-    return data;
   }
 }
 
@@ -25,8 +24,7 @@ function getAttractions(page = 0, keyword = []) {
 function createItem(id, imgURL, title, mrt, category) {
   let attraction = document.createElement('div');
   attraction.className = 'attraction';
-  // attraction.href = `/attraction/${id}`
-  attraction.setAttribute('onclick', `location.href='/attraction/${id}'`);
+  attraction.onclick = () => location.href = `/attraction/${id}`;
   let attraction_img = document.createElement('img');
   attraction_img.id = 'attraction_img';
   attraction_img.src = imgURL;
@@ -64,7 +62,7 @@ function renderAttractions(attractionData, nextPage, keyword=[]) {
     let html = document.documentElement;
     window.onscroll = async function () {
       if (html.scrollTop + html.clientHeight + 40 >= html.scrollHeight) {
-        let data = await getAttractions(nextPage, keyword);
+        await getAttractions(nextPage, keyword);
         renderAttractions(data[0], data[1], keyword);
       }
     }
@@ -77,16 +75,15 @@ function renderAttractions(attractionData, nextPage, keyword=[]) {
 // View: 顯示查無結果訊息
 function showMessage(keyword) {
   let msg = document.createElement('div');
-  msg.id = 'msg';
   attractionGroup.appendChild(msg).textContent = `查無「${keyword}」結果`;
 }
 
 
 // Controller: 頁面初始化，載入畫面
 async function load() {
-  let userData = await getUserStatus();
+  userData = await getUserStatus();
   showBtn(userData);
-  let data = await getAttractions();
+  await getAttractions();
   renderAttractions(data[0], data[1]);
 }
 
@@ -97,22 +94,23 @@ async function getKeywordAttractions() {
   if (keyword != '' && keyword != previousInput) {
     previousInput = keyword;
     attractionGroup.textContent = '';  // 清除原本頁面
-    let data = await getAttractions(0, keyword);
+    await getAttractions(0, keyword);
     // 沒抓到景點
     if (!data[0]) {
       showMessage(keyword);
+      window.onscroll = () => false;
     } else {   // 有抓到景點
       renderAttractions(data[0], data[1], keyword);
     }
   } else if (keyword != '' && keyword == previousInput) {
-    return false;
+    return false;   // 若輸入的 keyword 沒變就不再重打 API
   }
 }
 
 
 window.addEventListener('load', load);
 searchBtn.addEventListener('click', getKeywordAttractions);
-inputField.addEventListener('keydown', function(event) {
+inputField.addEventListener('keyup', (event) => {
   if (event.key === 'Enter') {
     searchBtn.click();
   }

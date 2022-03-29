@@ -95,7 +95,7 @@ input[type='text'] {
 }
 
 /* 桌機筆電 (> 1200px) */
-@media all and (min-width: 1200.01px) {
+@media all and (min-width: 1201px) {
   .booking_main {
     width: 1200px;
     margin: 54px auto 0 auto;

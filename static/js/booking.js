@@ -1,6 +1,7 @@
 let deleteBtn = document.getElementById('delete_btn');
+let confirmBtn = document.getElementById('confirm_btn');
 
-let userData;
+// let userData;
 
 // Model: 取得預定行程資訊
 function getBookingInfo() {
@@ -88,5 +89,11 @@ async function deleteBooking() {
   }
 }
 
+// Controller: 確認付款
+function confirmPayment() {
+  
+}
+
 window.addEventListener('load', load);
 deleteBtn.addEventListener('click', deleteBooking);
+confirmBtn.addEventListener('click', confirmPayment);

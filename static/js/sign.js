@@ -10,6 +10,7 @@ let signUpBtn = document.getElementById('signup_btn');
 let signOutBtn = document.getElementById('signout');
 let showBookingInfoBtn = document.getElementById('booking_btn');
 
+let useData;
 
 // Model: 登入系統
 function signin(email, password) {

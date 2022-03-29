@@ -1,9 +1,11 @@
 from flask import Blueprint, request, jsonify, session
 from models.model_booking import create_booking_into_db, get_booking_from_db, delete_booking_from_db
+from views.view_booking import render_booking_info
 
 api_booking = Blueprint('api_booking', __name__)
 
 
+# Controller: 查詢已預定行程
 @api_booking.route('/api/booking', methods=['GET'])
 def get_booking_info():
   try:
@@ -20,31 +22,15 @@ def get_booking_info():
           "data": None
         })
       else:
-        attraction_id = data[0][0]
-        date = data[0][1]
-        time = data[0][2]
-        price = data[0][3]
-        attraction_name = data[1][0]
-        address = data[1][1]
-        image = data[1][2]
+        booking_info = render_booking_info(data)
         return jsonify({
-            "data": {
-                "attraction": {
-                    "id": attraction_id,
-                    "name": attraction_name,
-                    "address": address,
-                    "image": image
-                },
-                "date": str(date),
-                "time": time,
-                "price": price
-            }
+            "data": booking_info
         }), 200
 
   except Exception as e:
     print(e)
 
-
+# Controller: 新增一個預定
 @api_booking.route('/api/booking', methods=['POST'])
 def create_booking():
   try:
@@ -78,6 +64,7 @@ def create_booking():
         "message": "系統性錯誤，請稍後再試"
     }), 500
 
+# Controller: 刪除已預定行程
 @api_booking.route('/api/booking', methods=['DELETE'])
 def delete_booking():
   try:

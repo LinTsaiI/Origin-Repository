@@ -16,7 +16,7 @@ def get_keyword_attractions(page, keyword):
   return results   # 得到一個結果 list，其中資料為 tuple 型態
 
 
-# Model: 取得景點資訊
+# Model: 根據頁數取得景點資訊
 def get_attractions_without_keyword(page):
   db = connection_pool.get_connection()
   cursor = db.cursor()
@@ -33,7 +33,7 @@ def get_attractions_without_keyword(page):
 
 
 # Model: 根據 id 取得景點資訊
-def get_attraction(attractionId):
+def get_attraction_by_id(attractionId):
   db = connection_pool.get_connection()
   cursor = db.cursor()
   cursor.execute('''

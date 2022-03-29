@@ -8,9 +8,8 @@ let morningLabel = document.getElementById('morning_label');
 let afternoonLabel = document.getElementById('afternoon_label');
 let startBookingBtn = document.getElementById('start_booking_btn');
 
-let userData;
 let data;
-let currentPhoto = 0;
+let currentPhoto = 0;   // 初始圖片位置在第 0 張
 
 // Model: 取得當前頁面的景點資訊
 function getAttractionData() {
@@ -92,7 +91,7 @@ function showPhoto(index) {
     currentDot.remove();
     createDot(index);
   } else {
-    createDot(index);
+    createDot(index);   // 頁面初始化時直接新增黑點在第一張圖片位置
   }
 }
 
@@ -105,7 +104,7 @@ function renderCircles(num) {
     let circle = document.createElement('div');
     circle.className = 'circle';
     circle.onclick = () => {
-      currentPhoto = i;
+      currentPhoto = i;   // 點擊圈圈時更新目前圖片位置
       showPhoto(i);
     };
     dotGroup.appendChild(circle);
@@ -121,15 +120,16 @@ function createDot(index) {
   document.querySelectorAll('.circle')[index].appendChild(dot);
 }
 
-// View: 畫出主畫面
+// View: 畫出初始主畫面
 function renderAttraction() {
   if (data == '查無此景點') {
     document.querySelector('.top_section').textContent = data;
     document.querySelector('.info_detail').remove();
   } else {
-    renderCircles(data.images.length);
+    renderCircles(data.images.length);   // 根據圖片數畫出對應的圈圈數量
     showPhoto(0);
     document.getElementById('title').textContent = data.name;
+    // 若沒有 mrt 資訊則只顯示分類
     if(data.mrt) {
       document.getElementById('info').textContent = `${data.category} at ${data.mrt}`;
     } else {

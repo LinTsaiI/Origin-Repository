@@ -206,5 +206,10 @@ input[type='button'] {
   background: #757575;
   line-height: 104px;
   position: absolute;
-  margin-top: 54px;
+}
+
+@media all and (max-width: 600px) {
+  #footer {
+    margin-top: 54px;
+  }
 }
