@@ -33,6 +33,10 @@ body {
   height: 30px;
 }
 
+#attraction_name, #attraction_cover {
+  cursor: pointer;
+}
+
 .destination {
   font-weight: bold;
   color: #448899;

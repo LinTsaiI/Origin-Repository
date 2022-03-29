@@ -33,6 +33,7 @@ function deleteBookingFromDb() {
 
 // View: 顯示預定行程細節
 function renderBookingInfo(bookingInfo) {
+  let attractionId = bookingInfo.attraction.id
   let attractionName = bookingInfo.attraction.name;
   let place = bookingInfo.attraction.address;
   let attractionCoverUrl = bookingInfo.attraction.image;
@@ -41,7 +42,9 @@ function renderBookingInfo(bookingInfo) {
   let price = bookingInfo.price;
   document.getElementById('member_name').textContent = userData.name;
   document.getElementById('attraction_name').textContent = attractionName;
+  document.getElementById('attraction_name').onclick = () => location.href = `/attraction/${attractionId}`;
   document.getElementById('attraction_cover').src = attractionCoverUrl;
+  document.getElementById('attraction_cover').onclick = () => location.href = `/attraction/${attractionId}`;
   document.getElementById('date').textContent = date;
   if(time == 'morning') {
     document.getElementById('time').textContent = '早上 8 點到下午 2 點';

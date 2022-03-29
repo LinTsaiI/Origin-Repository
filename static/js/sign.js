@@ -200,3 +200,30 @@ signInBtn.addEventListener('click', submitSingIn);
 signUpBtn.addEventListener('click', submitSingUp);
 signOutBtn.addEventListener('click', signOut);
 showBookingInfoBtn.addEventListener('click', showBookingInfo);
+
+let signInFormKeyupEventTarget = [
+  document.getElementById('signin_email'),
+  document.getElementById('signin_password'),
+]
+signInFormKeyupEventTarget.forEach(target => {
+  target.addEventListener('keyup', (event) => {
+  if(event.key === 'Enter') {
+      signInBtn.click();
+    }
+  })
+})
+
+let signUpFormKeyupEventTarget = [
+  document.getElementById('signup_name'),
+  document.getElementById('signup_email'),
+  document.getElementById('signup_password')
+]
+signUpFormKeyupEventTarget.forEach(target => {
+  target.addEventListener('keyup', (event) => {
+  if(event.key === 'Enter') {
+      signUpBtn.click();
+    }
+  })
+})
+
+
