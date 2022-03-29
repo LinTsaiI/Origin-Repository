@@ -1,23 +1,25 @@
 from flask import Blueprint, request, jsonify, session
+from flask_jwt_extended import *
 from models.model_user import is_member, create_user, get_user_id, authenticate_user
 api_user = Blueprint('api_user', __name__)
 
 # Controller: 查詢會員資料
 @api_user.route('/api/user', methods=['GET'])
+# 訪問此路徑需要 JWT。optional 設定 True 表示無論是否有 token 都可以訪問，設定 False 則在沒有 token 時會直接擋掉
+@jwt_required(optional=True)
 def get_user():
-  if 'email' not in session:
+  current_identity = get_jwt_identity()   # 取得 jwt identity (email)
+  if not current_identity:
       return jsonify({
           "data": None
       }), 200
   else:
-    member_id = session['id']
-    name = session['name']
-    email = session['email']
+    user_data = get_jwt()   # 取得 additional_claims 中的資訊
     return jsonify({
         "data": {
-            "id": member_id,
-            "name": name,
-            "email": email
+            "id": user_data['id'],
+            "name": user_data['name'],
+            "email": user_data['email']
         }
     }), 200
 
@@ -38,13 +40,17 @@ def signup():
     else:
       create_user(name, email, password)
       member_id = get_user_id(email)
-      session['id'] = member_id
-      session['name'] = name
-      session['email'] = email
-      session['password'] = password
-      return jsonify({
+      response = jsonify({
           "ok": True
-      }), 200
+      })
+      user_data = {
+          "id": member_id,
+          "name": name,
+          "email": email
+      }
+      access_token = create_access_token(identity=email, additional_claims=user_data)
+      set_access_cookies(response, access_token)
+      return response, 200
   
   except Exception as e:
     print(e)
@@ -63,12 +69,20 @@ def signin():
     if email != '' and password != '':
       data = authenticate_user(email, password)
       if data:
-        session['id'] = data[0]
-        session['name'] = data[1]
-        session['email'] = data[2]
-        return jsonify({
+        response = jsonify({
             "ok": True
-        }), 200
+        })
+        user_data = {
+            "id": data[0],
+            "name": data[1],
+            "email": data[2]
+        }
+        # 確認為正確的 user 後，產生一組 token，以 email 作為 token 的識別
+        # 額外附加的內容放在 additional_claims 中
+        access_token = create_access_token(identity=email, additional_claims=user_data)
+        # 修改 response，設定 cookie
+        set_access_cookies(response, access_token)
+        return response, 200
       else:
         return jsonify({
             "error": True,
@@ -85,9 +99,9 @@ def signin():
 # Controller: 登出會員系統
 @api_user.route('/api/user', methods=['DELETE'])
 def signout():
-  session.pop('id', None)
-  session.pop('name', None)
-  session.pop('email', None)
-  return jsonify({
+  response = jsonify({
       "ok": True
-  }), 200
+  })
+  # 修改 response，將包含 JWT 的 cookies 及對應的 CSRF cookies 刪除
+  unset_jwt_cookies(response)
+  return response, 200

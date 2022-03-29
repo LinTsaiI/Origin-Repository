@@ -1,13 +1,17 @@
 from flask import *
+from flask_jwt_extended import JWTManager
 from routes.api_attractions import api_attractions
 from routes.api_user import api_user
 from routes.api_booking import api_booking
 import os
 app=Flask(__name__)
+jwt = JWTManager(app)   # 啟用 JWT
 app.secret_key = os.urandom(24)
 app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['JSON_SORT_KEYS'] = False
+app.config['JWT_TOKEN_LOCATION'] = ['cookies']   # 設定存放 JWT 的位置，預設是 headers
+app.config['JWT_COOKIE_SECURE'] = False
 
 app.register_blueprint(api_attractions)
 app.register_blueprint(api_user)

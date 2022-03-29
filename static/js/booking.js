@@ -7,9 +7,11 @@ let confirmBtn = document.getElementById('confirm_btn');
 function getBookingInfo() {
   return fetch('/api/booking', {
     method: 'GET',
+    credentials: 'same-origin',
     headers: {
-      'Content-Type': 'application/json'
-    },
+      'Content-Type': 'application/json',
+      'X-csrf-token': document.cookie.split('csrf_access_token=')[1]
+    }
   })
     .then(response => response.json())
     .then(result => result)
@@ -19,8 +21,10 @@ function getBookingInfo() {
 function deleteBookingFromDb() {
   return fetch('/api/booking', {
     method: 'DELETE',
+    credentials: 'same-origin',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'X-csrf-token': document.cookie.split('csrf_access_token=')[1]
     }
   })
     .then(response => response.json())

@@ -121,7 +121,13 @@ function transitionOut() {
 
 // Controller: 確認使用者登入狀況
 function getUserStatus() {
-  return fetch('/api/user', { method: 'GET' })
+  return fetch('/api/user', {
+    method: 'GET',
+    credentials: 'same-origin',   // request 與後端 API 來自同一個 Domain
+    headers: {
+      'X-csrf-token': document.cookie.split('csrf_access_token=')[1]   // request 需帶上 csrftoken 作為比對 JWT 使用
+    }
+  })
     .then(response => response.json())
     .then(result => {
       userData = result.data;

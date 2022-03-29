@@ -31,9 +31,11 @@ function getAttractionData() {
 function checkBookingStatus() {
   return fetch('/api/booking', {
     method: 'GET',
+    credentials: 'same-origin',
     headers: {
-      'Content-Type': 'application/json'
-    },
+      'Content-Type': 'application/json',
+      'X-csrf-token': document.cookie.split('csrf_access_token=')[1]
+    }
   })
     .then(response => response.json())
     .then(result => result)
@@ -43,8 +45,10 @@ function checkBookingStatus() {
 function createBooking() {
   return fetch('/api/booking', {
     method: 'POST',
+    credentials: 'same-origin',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'X-csrf-token': document.cookie.split('csrf_access_token=')[1]
     },
     body: JSON.stringify({
         attractionId: id,
@@ -71,8 +75,10 @@ function createBooking() {
 function replaceBooking() {
   fetch('/api/booking', {
     method: 'DELETE',
+    credentials: 'same-origin',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'X-csrf-token': document.cookie.split('csrf_access_token=')[1]
     }
   })
     .then(response => response.json())
