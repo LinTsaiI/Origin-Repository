@@ -59,17 +59,17 @@ DROP TABLE IF EXISTS `booking`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `booking` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
+  `member_id` bigint NOT NULL,
   `attraction_id` bigint NOT NULL,
   `date` date NOT NULL,
   `time` varchar(20) NOT NULL,
   `price` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `attraction_id` (`attraction_id`),
-  KEY `email` (`email`),
-  CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`attraction_id`) REFERENCES `taipei_attractions` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `member_id` (`member_id`),
+  CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`attraction_id`) REFERENCES `taipei_attractions` (`id`),
+  CONSTRAINT `booking_ibfk_2` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,6 +78,7 @@ CREATE TABLE `booking` (
 
 LOCK TABLES `booking` WRITE;
 /*!40000 ALTER TABLE `booking` DISABLE KEYS */;
+INSERT INTO `booking` VALUES (17,16,4,'2022-04-02','morning',2000),(18,12,5,'2022-04-07','afternoon',2500),(19,3,11,'2022-04-05','morning',2000),(20,16,28,'2022-04-21','afternoon',2500),(21,16,15,'2022-04-15','afternoon',2500);
 /*!40000 ALTER TABLE `booking` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -95,7 +96,7 @@ CREATE TABLE `member` (
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,7 +105,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES (2,'Test123','test123@gmail.com','test123'),(3,'ABC','abc@gmail.com','abc'),(4,'asc','asc','asc'),(5,'123','123','123'),(6,'Test','test@gmail.com','test'),(7,'1234','1234','1234'),(8,'5678','5678','5678'),(9,'9898','9898','9898'),(10,'azzx','azzx','azzx'),(11,'9900','9900','9900'),(12,'123','123@','123123'),(13,'abc','abc@','abcabc'),(14,'456','456@','456456'),(15,'789','789@','789789'),(16,'aaa','aaa@','aaa');
+INSERT INTO `member` VALUES (2,'Test123','test123@gmail.com','test123'),(3,'ABC','abc@gmail.com','abc'),(4,'asc','asc','asc'),(5,'123','123','123'),(6,'Test','test@gmail.com','test'),(7,'1234','1234','1234'),(8,'5678','5678','5678'),(9,'9898','9898','9898'),(10,'azzx','azzx','azzx'),(11,'9900','9900','9900'),(12,'123','123@','123123'),(13,'abc','abc@','abcabc'),(14,'456','456@','456456'),(15,'789','789@','789789'),(16,'aaa','aaa@','aaa'),(17,'jj','jj@','jj');
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,4 +150,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-29  1:16:49
+-- Dump completed on 2022-03-30 18:49:45
