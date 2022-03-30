@@ -111,6 +111,11 @@ input[type=text]:focus {
   border-top-left-radius: 5px;    border-top-right-radius: 5px;
 }
 
+.attraction:hover {
+  transform: scale(1.05);
+  transition: transform 300ms ease-in-out 0s;
+}
+
 #title {
   margin: 0px 10px 15px 10px;
   padding-top: 12px;

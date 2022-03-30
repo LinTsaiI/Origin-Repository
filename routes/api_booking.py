@@ -19,8 +19,8 @@ def get_booking_info():
       }), 403
     else:
       user_data = get_jwt()
-      email = user_data['email']
-      data = get_booking_from_db(email)
+      member_id = user_data['id']
+      data = get_booking_from_db(member_id)
       if not data:
         return jsonify({
           "data": None
@@ -57,9 +57,8 @@ def create_booking():
       }), 400
     else:
       user_data = get_jwt()
-      name = user_data['name']
-      email = user_data['email']
-      create_booking_into_db(name, email, attraction_id, date, time, price)
+      member_id = user_data['id']
+      create_booking_into_db(member_id, attraction_id, date, time, price)
       return jsonify({
           "ok": True
       }), 200
@@ -84,8 +83,8 @@ def delete_booking():
       }), 403
     else:
       user_data = get_jwt()
-      email = user_data['email']
-      delete_booking_from_db(email)
+      member_id = user_data['id']
+      delete_booking_from_db(member_id)
       return jsonify({
           "ok": True
       }), 200
