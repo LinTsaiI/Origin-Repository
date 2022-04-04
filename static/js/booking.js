@@ -1,7 +1,53 @@
 let deleteBtn = document.getElementById('delete_btn');
 let confirmBtn = document.getElementById('confirm_btn');
+let contactName = document.getElementById('contact_name');
+let contactEmail = document.getElementById('contact_email');
+let phoneNumber = document.getElementById('contact_phone');
+let cardNumber = document.getElementById('card_number');
+let expirationDate = document.getElementById('card_expiration_date');
+let cvv = document.getElementById('card_cvv');
 
-// let userData;
+let bookingInfo;
+
+TPDirect.setupSDK(11327, 'app_whdEWBH8e8Lzy4N6BysVRRMILYORF6UxXbiOFsICkz0J9j1C0JUlCHv1tVJC', 'sandbox');
+let fields = {
+  number: {
+    element: cardNumber,
+    placeholder: '**** **** **** ****',
+  },
+  expirationDate: {
+    element: expirationDate,
+    placeholder: 'MM / YY',
+  },
+  ccv: {
+    element: cvv,
+    placeholder: 'cvv',
+  }
+}
+
+TPDirect.card.setup({
+  fields: fields,
+  styles: {
+    'input': {
+      'font-size': '16px',
+    },
+    '.valid': {
+      'color': 'green'
+    },
+    '.invalid': {
+      'color': 'red'
+    },
+  }
+});
+
+
+TPDirect.card.onUpdate((update) => {
+  if(update.canGetPrime) {
+    confirmBtn.removeAttribute('disabled');
+  } else {
+    confirmBtn.setAttribute('disabled', true);
+  }
+})
 
 // Model: 取得預定行程資訊
 function getBookingInfo() {
@@ -14,7 +60,7 @@ function getBookingInfo() {
     }
   })
     .then(response => response.json())
-    .then(result => result)
+    .then(result => bookingInfo = result)
 }
 
 // Model: 從資料庫刪除預定資訊
@@ -32,14 +78,14 @@ function deleteBookingFromDb() {
 }
 
 // View: 顯示預定行程細節
-function renderBookingInfo(bookingInfo) {
-  let attractionId = bookingInfo.attraction.id
-  let attractionName = bookingInfo.attraction.name;
-  let place = bookingInfo.attraction.address;
-  let attractionCoverUrl = bookingInfo.attraction.image;
-  let date = bookingInfo.date;
-  let time = bookingInfo.time;
-  let price = bookingInfo.price;
+function renderBookingInfo() {
+  let attractionId = bookingInfo.data.attraction.id
+  let attractionName = bookingInfo.data.attraction.name;
+  let place = bookingInfo.data.attraction.address;
+  let attractionCoverUrl = bookingInfo.data.attraction.image;
+  let date = bookingInfo.data.date;
+  let time = bookingInfo.data.time;
+  let price = bookingInfo.data.price;
   document.getElementById('member_name').textContent = userData.name;
   document.getElementById('attraction_name').textContent = attractionName;
   document.getElementById('attraction_name').onclick = () => location.href = `/attraction/${attractionId}`;
@@ -75,12 +121,12 @@ async function load() {
   if(!userData) {
     window.location.href = '/';
   } else {
-    let result = await getBookingInfo();
-    if(!result.data) {
+    await getBookingInfo();
+    if(!bookingInfo.data) {
       showNoBookingMsg();
-    } else if(result.data) {
-      renderBookingInfo(result.data);
-    } else if(result.error) {
+    } else if(bookingInfo.data) {
+      renderBookingInfo();
+    } else if(bookingInfo.error) {
       window.location.href = '/';
     }
   }
@@ -98,7 +144,46 @@ async function deleteBooking() {
 
 // Controller: 確認付款
 function confirmPayment() {
-  
+  const tappayStatus = TPDirect.card.getTappayFieldsStatus();
+  if (tappayStatus.canGetPrime === true) {
+    TPDirect.card.getPrime((result) => {
+      fetch('/api/order', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-csrf-token': document.cookie.split('csrf_access_token=')[1]
+        },
+        body: JSON.stringify({
+          prime: result.card.prime,
+          order: {
+            price: bookingInfo.data.price,
+            trip: {
+              attraction: {
+                id: bookingInfo.data.attraction.id,
+                name: bookingInfo.data.attraction.name,
+                address: bookingInfo.data.attraction.address,
+                image: bookingInfo.data.attraction.image
+              },
+              date: bookingInfo.data.date,
+              time: bookingInfo.data.time
+            },
+            contact: {
+              name: contactName.value,
+              email: contactEmail.value,
+              phone: phoneNumber.value
+            }
+          }
+        })
+      })
+        .then(response => response.json())
+        .then(result => {
+          if(result.data) {
+            window.location.href = `/thankyou?number=${result.data.number}`
+          }
+        })
+    })
+  }
 }
 
 window.addEventListener('load', load);

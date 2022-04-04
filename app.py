@@ -3,6 +3,7 @@ from flask_jwt_extended import JWTManager
 from routes.api_attractions import api_attractions
 from routes.api_user import api_user
 from routes.api_booking import api_booking
+from routes.api_order import api_order
 import os
 app=Flask(__name__)
 jwt = JWTManager(app)   # 啟用 JWT
@@ -16,6 +17,7 @@ app.config['JWT_COOKIE_SECURE'] = False
 app.register_blueprint(api_attractions)
 app.register_blueprint(api_user)
 app.register_blueprint(api_booking)
+app.register_blueprint(api_order)
 
 # Pages
 @app.route("/")

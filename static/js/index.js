@@ -60,7 +60,7 @@ function renderAttractions(attractionData, nextPage, keyword=[]) {
   }
   if (nextPage) {
     let html = document.documentElement;
-    window.onscroll = async function () {
+    window.onscroll = async () =>  {
       if (html.scrollTop + html.clientHeight + 40 >= html.scrollHeight) {
         await getAttractions(nextPage, keyword);
         renderAttractions(data[0], data[1], keyword);
@@ -86,6 +86,7 @@ async function load() {
   await getAttractions();
   renderAttractions(data[0], data[1]);
 }
+
 
 let previousInput;
 // Controller: 輸入關鍵字

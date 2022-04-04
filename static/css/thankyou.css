@@ -1,0 +1,23 @@
+body {
+  color: #666666;
+  text-align: center;
+}
+
+.thankyou_container {
+  height: calc(100vh - 94px - 104px);
+  margin-top: 94px;
+}
+
+#order_msg {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 40px;
+}
+
+
+
+@media all and (max-width: 600px) {
+  .thankyou_container{
+    height: calc(100vh - 148px - 104px);
+  }
+}

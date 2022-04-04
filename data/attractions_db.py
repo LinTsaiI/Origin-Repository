@@ -75,22 +75,40 @@ cursor = db.cursor()
 # )''')
 
 # 新增紀錄使用者訂單的表格 (booking)
+# cursor.execute('''
+#   CREATE TABLE booking(
+#     id BIGINT PRIMARY KEY AUTO_INCREMENT,
+#     name VARCHAR(255) NOT NULL,
+#     email VARCHAR(255) NOT NULL,
+#     attraction_id BIGINT NOT NULL,
+#     date DATE NOT NULL,
+#     time VARCHAR(20) NOT NULL,
+#     price INT NOT NULL,
+#     FOREIGN KEY (attraction_id) REFERENCES taipei_attractions(id),
+#     INDEX (email)
+#   );
+# ''')
+
+# 新增紀錄使用者付款訂單的表格 (order)
 cursor.execute('''
-  CREATE TABLE booking(
+  CREATE TABLE `order`(
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
+    order_id VARCHAR(255) NOT NULL,
+    member_id BIGINT NOT NULL,
+    contact_name VARCHAR(255) NOT NULL,
+    contact_email VARCHAR(255) NOT NULL,
+    contact_phone VARCHAR(255) NOT NULL,
     attraction_id BIGINT NOT NULL,
     date DATE NOT NULL,
     time VARCHAR(20) NOT NULL,
     price INT NOT NULL,
-    FOREIGN KEY (attraction_id) REFERENCES taipei_attractions(id),
-    INDEX (email)
+    status SMALLINT NOT NULL DEFAULT 1,
+    order_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (member_id) REFERENCES member(id),
+    UNIQUE INDEX (order_id)
   );
 ''')
 
 cursor.close()
 db.commit()
 db.close()
-
-# FOREIGN KEY(email) REFERENCES member(email) ON DELETE CASCADE,

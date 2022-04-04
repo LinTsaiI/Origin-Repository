@@ -4,9 +4,21 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <link rel='stylesheet' href='../static/css/shared.css' type='text/css'>
+  <link rel='stylesheet' href='../static/css/thankyou.css' type='text/css'>
+  <title>台北一日遊</title>
 </head>
 <body>
+  {% include "/shared/nav.html" %}
+  <div class="thankyou_container">
+    <h3>您的訂單狀態如下：</h3>
+  </div>
+
+  {% include "/shared/sign_modals.html" %}
   
+  {% include "/shared/footer.html" %}
+    
+  <script type='text/javascript' src='../static/js/sign.js'></script>
+  <script type='text/javascript' src='../static/js/thankyou.js'></script>
 </body>
 </html>

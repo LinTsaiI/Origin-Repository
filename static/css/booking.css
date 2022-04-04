@@ -55,11 +55,6 @@ body {
   border-bottom: 1px solid #E8E8E8;
 }
 
-.booking_input {
-  width: 200px;
-  height: 38px;
-}
-
 input[type='text'] {
   margin: 10px auto 10px 10px;
   border: 1px solid #E8E8E8;
@@ -94,8 +89,22 @@ input[type='text'] {
   border-radius: 5px;
 }
 
+#confirm_btn:disabled {
+  background: #8f8f8f;
+  cursor: initial;
+}
+
 #footer {
   bottom: 0;
+}
+
+.tpfield {
+  height: 38px;
+  width: 200px;
+  border: 1px solid #E8E8E8;
+  padding: 10px;
+  display: inline-flex;
+  margin: 15px;
 }
 
 /* 桌機筆電 (> 1200px) */

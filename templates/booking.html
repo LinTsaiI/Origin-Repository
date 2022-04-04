@@ -9,6 +9,7 @@
   <title>台北一日遊</title>
   <link rel='stylesheet' href='../static/css/shared.css' type='text/css'>
   <link rel='stylesheet' href='../static/css/booking.css' type='text/css'>
+  <script src="https://js.tappaysdk.com/tpdirect/v5.8.0"></script>
 </head>
 
 <body>
@@ -49,22 +50,22 @@
       </div>
       <div class='payment_info'>
         <div class='info_head style_inline'>信用卡付款資訊</div>
-        卡片號碼：<input type='text' class='booking_input' placeholder='**** **** **** ****' id='payment_credit_card'><br>
-        過期時間：<input type='text' class='booking_input' placeholder='MM/YY' id='payment_expiry_date'><br>
-        驗證密碼：<input type='text' class='booking_input' placeholder='CVV' id='payment_auth_number'>
+        卡片號碼：<div class="tpfield" id="card_number"></div><br>
+        過期時間：<div class="tpfield" id="card_expiration_date"></div><br>
+        驗證密碼：<div class="tpfield" id="card_cvv"></div>
       </div>
       <div class='confirm'>
         <div class='total_price'>
           總價：<div class='style_bold'>新台幣 <span id='total_price'></span> 元</div>
         </div>
-        <input type='button' value='確認訂購並付款' class='enter' id='confirm_btn'>
+        <input type='button' value='確認訂購並付款' class='enter' id='confirm_btn' disabled>
       </div>
     </div>
   </div>
   {% include "/shared/sign_modals.html" %}
   
   {% include "/shared/footer.html" %}
-
+  
   <script type='text/javascript' src='../static/js/sign.js'></script>
   <script type='text/javascript' src='../static/js/booking.js'></script>
 </body>
