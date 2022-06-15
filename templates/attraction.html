@@ -12,69 +12,67 @@
 </head>
 
 <body>
-  {% include "/shared/nav.html" %}
 
-  <div class='top_section'>
-    <div class='attraction_imgs'>
-      <diV class='arrow'>
-        <img id='left_arrow' src='../static/img/btn_leftArrow.png'>
-        <img id='right_arrow' src='../static/img/btn_rightArrow.png'>
-      </diV>
-      <div class='dots'>
-        <!-- <div class='dot_group'>
-          <div class='circle'>
-            <div id='current' class='dot'></div>
-          </div>
-        </div> -->
-      </div>
-    </div>
-    <form class='booking'>
-      <div id='title'></div>
-      <div id='info' class='normal_text'></div>
-      <div class='booking_form'>
-        <div class='form_name'>訂購導覽行程</div>
-        <div class='normal_text'>以此景點為中心的一日行程，帶您探索城市角落故事</div>
-        <div class='inline'>
-          <div>選擇日期：</div>&nbsp
-          <input type='date' id='date' name='date'>
+  {% include "/shared/nav.html" %}
+  
+  <div class='outer_container'>
+    <div class='top_section'>
+      <div class='attraction_imgs'>
+        <diV class='arrow'>
+          <img id='left_arrow' src='../static/img/btn_leftArrow.png'>
+          <img id='right_arrow' src='../static/img/btn_rightArrow.png'>
+        </diV>
+        <div class='dots'>
+          <!-- render circles by photo amount -->
         </div>
-        <div class='inline'>
-          <div>選擇時間：</div>
-          <input type='hidden' name='time' id='time' value='morning'>
-          <div class='radio' id='morning'>
-            <div class='radio_input'>
-              <div class='radio_label' id='morning_label'></div>
+      </div>
+      <form class='booking'>
+        <div id='title'></div>
+        <div id='info' class='normal_text'></div>
+        <div class='booking_form'>
+          <div class='form_name'>訂購導覽行程</div>
+          <div class='normal_text'>以此景點為中心的一日行程，帶您探索城市角落故事</div>
+          <div class='inline'>
+            <div>選擇日期：</div>&nbsp
+            <input type='date' id='date' name='date'>
+          </div>
+          <div class='inline'>
+            <div>選擇時間：</div>
+            <input type='hidden' name='time' id='time' value='morning'>
+            <div class='radio' id='morning'>
+              <div class='radio_input'>
+                <div class='radio_label' id='morning_label'></div>
+              </div>
+              <div class='option'>上半天</div>
             </div>
-            <div class='option'>上半天</div>
-          </div>
-          <div class='radio' id='afternoon'>
-            <div class='radio_input'>
-              <div class='radio_label' id='afternoon_label'></div>
+            <div class='radio' id='afternoon'>
+              <div class='radio_input'>
+                <div class='radio_label' id='afternoon_label'></div>
+              </div>
+              <div class='option'>下半天</div>
             </div>
-            <div class='option'>下半天</div>
           </div>
+          <div class='inline'>
+            <div>導覽費用：</div>
+            <input type='hidden' name='price' id='price' value='2000'>
+            <div class='price'>&nbsp新台幣&nbsp2000&nbsp元</div>
+          </div>
+          <button type='button' id='start_booking_btn'>開始預訂行程</button><span id='booking_error_msg'></span>
         </div>
-        <div class='inline'>
-          <div>導覽費用：</div>
-          <input type='hidden' name='price' id='price' value='2000'>
-          <div class='price'>&nbsp新台幣&nbsp2000&nbsp元</div>
-        </div>
-        <button type='button' id='start_booking_btn'>開始預訂行程</button><span id='booking_error_msg'></span>
-      </div>
-    </form>
-  </div>
-  <div class='info_detail'>
-    <div id='description'></div>
-    <div>
-      <div class='cat_title'>景點地址：</div>
-      <div id='address'></div>
+      </form>
     </div>
-    <div>
-      <div class='cat_title'>
-        交通方式：
+    <div class='info_detail'>
+      <div id='loading_icon'></div>
+      <div id='description'></div>
+      <div>
+        <div class='cat_title'></div>
+        <div id='address'></div>
       </div>
-      <div id='transport'>
-        </div>
+      <div>
+        <div class='cat_title'></div>
+        <div id='transport'>
+          </div>
+      </div>
     </div>
   </div>
   {% include "/shared/sign_modals.html" %}

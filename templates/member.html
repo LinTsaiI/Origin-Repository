@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel='shortcut icon' href='#' />
+  <title>台北一日遊</title>
+  <link rel='stylesheet' href='../static/css/shared.css' type='text/css'>
+  <link rel='stylesheet' href='../static/css/member.css' type='text/css'>
+</head>
+
+<body>
+  {% include "/shared/nav.html" %}
+
+  <div class='container'>
+    <div class='loading_icon'></div>
+    <div class='member_info'>
+      <div id='avatar'></div>
+      <div class='member_detail'>
+        <div id='username' class='style_inline'></div>
+        <div id='account' class='style_inline'></div>
+        <div id='password' class='style_inline'></div>
+      </div>
+    </div>
+    <div class='loading_icon'></div>
+    <div id='order_info'>
+      <div class='title'>
+        <div id='order_number' class='cell'>訂單編號</div>
+        <div id='trip' class='cell'>行程</div>
+        <div id='date' class='cell'>日期</div>
+        <div id='time' class='cell'>時間</div>
+        <div id='price' class='cell'>單價</div>
+        <div id='total_price' class='cell'>總金額</div>
+        <div id='status' class='cell'>付款狀態</div>
+      </div>
+      <div id='order_list'>
+      </div>
+    </div>
+    <div class='btn_block'>
+      <input type='button' value='回首頁' class='enter' id='home_btn'>
+      <input type='button' value='登出系統' class='enter' id='signout_btn'>
+    </div>
+  </div>
+
+  {% include "/shared/sign_modals.html" %}
+
+  {% include "/shared/footer.html" %}
+
+  <script type='text/javascript' src='../static/js/sign.js'></script>
+  <script type='text/javascript' src='../static/js/member.js'></script>
+</body>
+
+</html>

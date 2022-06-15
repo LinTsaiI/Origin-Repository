@@ -62,7 +62,9 @@ function renderAttractions(attractionData, nextPage, keyword=[]) {
     let html = document.documentElement;
     window.onscroll = async function () {
       if (html.scrollTop + html.clientHeight + 40 >= html.scrollHeight) {
+        showLoadingIcon();
         await getAttractions(nextPage, keyword);
+        document.getElementById('loading_icon').remove();
         renderAttractions(data[0], data[1], keyword);
       }
     }
@@ -75,7 +77,17 @@ function renderAttractions(attractionData, nextPage, keyword=[]) {
 // View: 顯示查無結果訊息
 function showMessage(keyword) {
   let msg = document.createElement('div');
+  msg.className = 'no_search_msg';
   attractionGroup.appendChild(msg).textContent = `查無「${keyword}」結果`;
+}
+
+// View: 初始後再次顯示 loading icon
+function showLoadingIcon() {
+  let loadingIcon = document.createElement('div');
+  loadingIcon.id = 'loading_icon';
+  let footer = document.getElementById('footer');
+  let body = document.getElementsByTagName('body')[0];
+  body.insertBefore(loadingIcon, footer);
 }
 
 
@@ -84,6 +96,7 @@ async function load() {
   userData = await getUserStatus();
   showBtn(userData);
   await getAttractions();
+  document.getElementById('loading_icon').remove();
   renderAttractions(data[0], data[1]);
 }
 

@@ -36,6 +36,21 @@
         </form>
       </div>
     </div>
+    <div class='modal transition-in' id='ok_window'>
+      <div class='form_top'></div>
+      <div class='modal_content'>
+        <img class='close_icon' src='../static/img/icon_close.png' id='close_ok'>
+        <div class='ok_text'>
+          <div class='ok_title'>行程預定成功</div>
+          <div>請至 <span class='booking_link' onclick="location.href='/booking'">預定行程</span> 查看並完成付款</div>
+          <input type='button' value='回首頁' class='ok_btn' onclick="location.href='/'">
+        </div>
+      </div>
+    </div>
+    <div class='modal transition-in' id='paying_window'>
+      <div class='form_top'></div>
+        <div class='paying_text'>付款連線中，請稍候...</div>
+    </div>
   </div>
 </body>
 </html>

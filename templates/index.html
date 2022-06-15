@@ -10,6 +10,7 @@
   <link rel='stylesheet' href='../static/css/index.css' type='text/css'>
 </head>
 <body>
+
   {% include "/shared/nav.html" %}
 
   <div class='hero_section'>
@@ -24,20 +25,11 @@
       </div>
     </div>
   </div>
+  <div id='loading_icon'></div>
   <div class='attractions'>
-    <div id='attractions_group'>
-      <!-- <div class='attraction'>
-        <div class='img'>
-          <img id='attraction_img' src='../static/img/demo.png'>
-          <div id='title'>平安鐘</div>
-        </div>
-        <div class='info'>
-          <div id='mrt'>忠孝復興</div>
-          <div id='category'>公共藝術</div>
-        </div>
-      </div> -->
-    </div>
+    <div id='attractions_group'></div>
   </div>
+
   {% include "/shared/sign_modals.html" %}
 
   {% include "/shared/footer.html" %}

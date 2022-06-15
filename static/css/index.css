@@ -1,23 +1,9 @@
-body {
-  font-family: Noto Sans TC;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  margin: 0;
-  min-height: calc(100vh - 54px);
-  position: relative;
-}
-
 button {
   cursor: pointer;
 }
 
-* {
-  box-sizing: border-box;
-}
-
 .hero_section {
-  margin-top: 54px;
+  margin-top: 60px;
   width: 100vw;
   background-color: #AADDEE;
   background: linear-gradient(135deg, #AADDEE 0%, #66AABB 100%);
@@ -88,13 +74,18 @@ input[type=text]:focus {
 .attractions {
   display: flex;
   justify-content: center;
-  min-height: calc(100vh - 54px - 322px - 104px);
+  min-height: calc(100vh - 60px - 320px - 104px);
 }
 
 #attractions_group {
   display: grid;
   justify-content: space-between;
   margin: 40px 0;
+}
+
+.no_search_msg {
+  font-size: large;
+  font-weight: bold;
 }
 
 .attraction {
@@ -109,6 +100,11 @@ input[type=text]:focus {
   width: 100%;
   object-fit: cover;
   border-top-left-radius: 5px;    border-top-right-radius: 5px;
+}
+
+.attraction:hover {
+  transform: scale(1.05);
+  transition: transform 300ms ease-in-out 0s;
 }
 
 #title {
@@ -172,6 +168,10 @@ input[type=text]:focus {
 
 /* 平板 (<=1200px, > 600px)*/
 @media all and (max-width: 1200px) {
+  .hero_section {
+    height: 320px;
+  }
+
   .hero {
     width: 100vw;
     background-size: 55%;

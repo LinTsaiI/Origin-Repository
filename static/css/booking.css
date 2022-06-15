@@ -1,25 +1,14 @@
-body {
-  font-family: Noto Sans TC;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  margin: 0;
-  min-height: calc(100vh - 54px);
-  position: relative;
-  color: #666666;
-}
-
-* {
-  box-sizing: border-box;
-}
-
 .booking_content {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
   border-bottom: 1px solid #E8E8E8;
 }
 
+.booking_item {
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
 
 .info_head {
   font-weight: bold;
@@ -73,7 +62,7 @@ input[type='text'] {
 
 .confirm {
   position: relative;
-  height: 280px;
+  height: 200px;
 }
 
 .total_price {
@@ -94,15 +83,26 @@ input[type='text'] {
   border-radius: 5px;
 }
 
-#footer {
-  bottom: 0;
+#confirm_btn:disabled {
+  background: #8f8f8f;
+  cursor: initial;
+}
+
+.tpfield {
+  height: 38px;
+  width: 200px;
+  border: 1px solid #E8E8E8;
+  padding: 10px;
+  display: inline-flex;
+  margin: 15px;
 }
 
 /* 桌機筆電 (> 1200px) */
 @media all and (min-width: 1201px) {
   .booking_main {
     width: 1200px;
-    margin: 54px auto 0 auto;
+    margin: 60px auto 0 auto;
+    min-height: calc(100vh - 60px - 104px);
   }
 
   .headline {
@@ -163,8 +163,9 @@ input[type='text'] {
 @media all and (max-width: 1200px) {
   .booking_main {
     width: 100vw;
-    margin: 54px auto 0 auto;
+    margin: 60px auto 0 auto;
     padding: 0;
+    min-height: calc(100vh - 60px - 104px);
   }
 
   .headline {
@@ -216,6 +217,7 @@ input[type='text'] {
     width: 100vw;
     padding: 0 10px;
     margin-bottom: 0;
+    min-height: calc(100vh - 60px - 104px);
   }
 
   .headline {
@@ -268,6 +270,10 @@ input[type='text'] {
   }
 
   #headline_rest {
+    margin: 0;
+  }
+
+  #footer {
     margin: 0;
   }
 }

@@ -1,16 +1,7 @@
-body {
-  font-family: Noto Sans TC;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  margin: 0;
-  min-height: calc(100vh - 54px);
-  position: relative;
-  color: #666666;
-}
 
-* {
-  box-sizing: border-box;
+.outer_container {
+  min-height:calc(100vh - 60px - 104px);
+  margin-top: 60px;
 }
 
 .attraction_imgs {
@@ -18,8 +9,8 @@ body {
   flex-direction: column;
   align-items: center;
   margin: 0;
-  /* background-image: url(../img/demo.png); */
-  background-size: cover;
+  background-image: url('../img/159.gif');
+  background-size: 64px;
   background-repeat: no-repeat;
   background-position: center;
   border-radius: 5px;
@@ -61,6 +52,7 @@ body {
   height: 100%;
   border: 1px solid #FFFFFF;
   background-color: #FFFFFF;
+  opacity: 0.75;
   border-radius: 6px;
   text-align: center;
   cursor: pointer;
@@ -72,6 +64,7 @@ body {
   border: 0;
   border-radius: 6px;
   background-color: #000000;
+  opacity: 0.75;
 }
 
 #title {
@@ -196,15 +189,21 @@ input[type='date']:focus {
  font-weight: bold;
 }
 
+.no_attraction_msg {
+  font-size: large;
+  font-weight: bold;
+  margin: 0 auto;
+}
+
 /* 桌機筆電 (> 1200px) */
 @media all and (min-width: 1200px) {
   .top_section {
     width: 1200px;
-    height: 400px;
+    height: 100%;
     display: flex;
     justify-content: center;
-    margin: 94px auto 40px auto;
-    padding: 0 15px;
+    margin: 0 auto 40px auto;
+    padding: 60px 15px 20px 15px;
   }
 
   .attraction_imgs {
@@ -227,12 +226,12 @@ input[type='date']:focus {
 }
 
 /* 平板 (<=1200px, > 680px)*/
-@media all and (max-width: 1199px) and (min-width: 681px) {
+@media all and (max-width: 1199px) and (min-width: 710px) {
   .top_section {
-    width: 100vw;
+    width: 100%;
     display: flex;
-    margin: 94px auto 40px auto;
-    padding: 0 15px;
+    margin: 0 auto;
+    padding: 60px 10px;
   }
 
   .attraction_imgs {
@@ -246,11 +245,15 @@ input[type='date']:focus {
 }
 
 /* 行動裝置 (<= 680px, min 360px) */
-@media all and (max-width: 680px) {
+@media all and (max-width: 709px) {
   .top_section {
-    margin: 94px auto 20px auto;
+    margin: 0 auto 40px auto;
     display: block;
-    padding: 0;
+    padding: 60px 10px;
+  }
+
+  .no_attraction_msg {
+    text-align: center;
   }
 
   .attraction_imgs {
@@ -273,5 +276,9 @@ input[type='date']:focus {
 
   .booking_form {
     width: 100%;
+  }
+
+  #footer {
+    margin: 0;
   }
 }

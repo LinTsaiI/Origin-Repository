@@ -1,12 +1,12 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import *
 from models.model_booking import create_booking_into_db, get_booking_from_db, delete_booking_from_db
-from views.view_booking import render_booking_info
+from views.view_booking import create_booking_list
 
 api_booking = Blueprint('api_booking', __name__)
 
 
-# Controller: 查詢已預定行程
+# Controller: 查詢預定行程(購物車商品)
 @api_booking.route('/api/booking', methods=['GET'])
 @jwt_required(optional=True)
 def get_booking_info():
@@ -19,14 +19,14 @@ def get_booking_info():
       }), 403
     else:
       user_data = get_jwt()
-      email = user_data['email']
-      data = get_booking_from_db(email)
+      member_id = user_data['id']
+      data = get_booking_from_db(member_id)
       if not data:
         return jsonify({
           "data": None
         })
       else:
-        booking_info = render_booking_info(data)
+        booking_info = create_booking_list(data)
         return jsonify({
             "data": booking_info
         }), 200
@@ -57,9 +57,8 @@ def create_booking():
       }), 400
     else:
       user_data = get_jwt()
-      name = user_data['name']
-      email = user_data['email']
-      create_booking_into_db(name, email, attraction_id, date, time, price)
+      member_id = user_data['id']
+      create_booking_into_db(member_id, attraction_id, date, time, price)
       return jsonify({
           "ok": True
       }), 200
@@ -72,9 +71,9 @@ def create_booking():
     }), 500
 
 # Controller: 刪除已預定行程
-@api_booking.route('/api/booking', methods=['DELETE'])
+@api_booking.route('/api/booking/<bookingId>', methods=['DELETE'])
 @jwt_required(optional=True)
-def delete_booking():
+def delete_booking(bookingId):
   try:
     current_identity = get_jwt_identity()
     if not current_identity:
@@ -84,8 +83,8 @@ def delete_booking():
       }), 403
     else:
       user_data = get_jwt()
-      email = user_data['email']
-      delete_booking_from_db(email)
+      member_id = user_data['id']
+      delete_booking_from_db(member_id, bookingId)
       return jsonify({
           "ok": True
       }), 200

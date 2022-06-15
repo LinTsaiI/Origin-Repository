@@ -1,12 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <link rel='shortcut icon' href='#' />
+  <title>台北一日遊</title>
+  <link rel='stylesheet' href='../static/css/shared.css' type='text/css'>
+  <link rel='stylesheet' href='../static/css/thankyou.css' type='text/css'>
 </head>
+
 <body>
+  {% include "/shared/nav.html" %}
+
+  <div class='order_container'>
+    <div class='info_head headline' id='greeting'></div>
+    <div class='loading_icon'></div>
+    <div class='order_msg'></div>
+    <div class='contact_info'>
+      <div class='info_head' id='order_number'></div>
+      <div class='info_head' id='order_status'><span class='status'></span></div>
+      <div class='contact' id='contact_name'></div>
+      <div class='contact' id='contact_email'></div>
+      <div class='contact' id='contact_phone'></div>
+      <div class='total_price'></div>
+    </div>
+    <div class='order_content'>
+      <div class='loading_icon'></div>
+      <!-- create order item blocks by item amount -->
+    </div>
+    <div class='btn_block'>
+      <input type='button' value='回首頁' class='enter' id='home_btn'>
+      <input type='button' value='會員中心' class='enter' id='member_btn'>
+    </div>
+  </div>
   
+  {% include "/shared/sign_modals.html" %}
+
+  {% include "/shared/footer.html" %}
+
+  <script type='text/javascript' src='../static/js/sign.js'></script>
+  <script type='text/javascript' src='../static/js/thankyou.js'></script>
 </body>
+
 </html>

@@ -1,20 +1,25 @@
-def render_booking_info(data):
-    attraction_id = data[0][0]
-    date = data[0][1]
-    time = data[0][2]
-    price = data[0][3]
-    attraction_name = data[1][0]
-    address = data[1][1]
-    image = data[1][2]
-    booking_info = {
-        "attraction": {
-            "id": attraction_id,
-            "name": attraction_name,
-            "address": address,
-            "image": image
-        },
-        "date": str(date),
-        "time": time,
-        "price": price
-    }
-    return booking_info
+def create_booking_list(data):
+    booking_list_combine =[]
+    for booking in data:
+        booking_id = booking[0]
+        attraction_id = booking[2]
+        date = booking[3]
+        time = booking[4]
+        price = booking[5]
+        attraction_name = booking[7]
+        address = booking[8]
+        image = booking[9]
+        booking_info = {
+            "id": booking_id,
+            "attraction": {
+                "id": attraction_id,
+                "name": attraction_name,
+                "address": address,
+                "image": image
+            },
+            "date": str(date),
+            "time": time,
+            "price": price
+        }
+        booking_list_combine.append(booking_info)
+    return booking_list_combine

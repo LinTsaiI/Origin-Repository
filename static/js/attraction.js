@@ -7,6 +7,7 @@ let afternoon = document.getElementById('afternoon');
 let morningLabel = document.getElementById('morning_label');
 let afternoonLabel = document.getElementById('afternoon_label');
 let startBookingBtn = document.getElementById('start_booking_btn');
+let closeOkWindowBtn = document.getElementById('ok_window');
 
 let data;
 let currentPhoto = 0;   // 初始圖片位置在第 0 張
@@ -25,20 +26,6 @@ function getAttractionData() {
       }
     })
     .catch(error => console.log('Error: ' + error))
-}
-
-// Model: 確認是否已有預定的行程
-function checkBookingStatus() {
-  return fetch('/api/booking', {
-    method: 'GET',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-csrf-token': document.cookie.split('csrf_access_token=')[1]
-    }
-  })
-    .then(response => response.json())
-    .then(result => result)
 }
 
 // Model: 建立一個預定行程
@@ -60,7 +47,8 @@ function createBooking() {
     .then(response => response.json())
     .then(result => {
       if(result.ok) {
-        window.location.href = '/booking';
+        addItem();
+        showOkWindow();
       } else if(result.error) {
         if(result.message == '未登入') {
           showModal();
@@ -71,27 +59,27 @@ function createBooking() {
     })
 }
 
-// Model: 取代已預定的行程
-function replaceBooking() {
-  fetch('/api/booking', {
-    method: 'DELETE',
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-csrf-token': document.cookie.split('csrf_access_token=')[1]
-    }
-  })
-    .then(response => response.json())
-    .then(result => {
-      if(result.ok) {
-        createBooking();
-      }
-    })
+// 取得當天日期
+function limitBookingDate() {
+  let today = new Date();
+  let yyyy = today.getFullYear();
+  let mm = today.getMonth() + 1;
+  let dd = today.getDate() + 1;
+  (mm < 10) ? mm = '0' + mm : mm;
+  (dd < 10) ? dd = '0' + dd : dd;
+  let date = yyyy + '-' + mm + '-' + dd;
+  document.getElementById('date').value = date;
+  document.getElementById('date').min = date;
 }
+
 
 // View: 顯示目前圖片及黑點位置
 function showPhoto(index) {
-  document.querySelector('.attraction_imgs').style.backgroundImage = `url('${data.images[index]}')`;
+  let image = document.querySelector('.attraction_imgs');
+  image.style.backgroundImage = `url('${data.images[index]}')`;
+  if(image.style.backgroundSize != 'cover') {
+    image.style.backgroundSize = 'cover';
+  }
   let currentDot = document.getElementById('current_dot');
   if (currentDot) {
     currentDot.remove();
@@ -129,9 +117,14 @@ function createDot(index) {
 // View: 畫出初始主畫面
 function renderAttraction() {
   if (data == '查無此景點') {
-    document.querySelector('.top_section').textContent = data;
+    let msg = document.createElement('div');
+    msg.className = 'no_attraction_msg';
+    msg.textContent = data;
+    document.querySelector('.top_section').textContent = '';
+    document.querySelector('.top_section').appendChild(msg);
     document.querySelector('.info_detail').remove();
   } else {
+    limitBookingDate();
     renderCircles(data.images.length);   // 根據圖片數畫出對應的圈圈數量
     showPhoto(0);
     document.getElementById('title').textContent = data.name;
@@ -142,9 +135,36 @@ function renderAttraction() {
       document.getElementById('info').textContent = `${data.category}`;
     }
     document.getElementById('description').textContent = data.description;
+    document.getElementsByClassName('cat_title')[0].textContent = '景點地址：';
     document.getElementById('address').textContent = data.address;
+    document.getElementsByClassName('cat_title')[1].textContent = '交通方式：';
     document.getElementById('transport').textContent = data.transport;
   }
+}
+
+// View: 按下開始預定按鈕，購物車商品數字+1
+function addItem() {
+  let itemNumber = document.getElementById('booking_number');
+  let number = parseInt(itemNumber.textContent);
+  if(!number) {
+    itemNumber.style.display = 'block';
+    itemNumber.textContent = 1;
+  } else {
+    number += 1;
+    itemNumber.textContent = number;
+  }
+}
+
+// View: 顯示預定成功視窗
+function showOkWindow() {
+  document.querySelector('.modal_background').style.display = 'block';
+  document.getElementById('ok_window').style.display = 'block';
+}
+
+// View: 隱藏預定成功視窗
+function closeOkWindow() {
+  document.querySelector('.modal_background').style.display = 'none';
+  document.getElementById('ok_window').style.display = 'none';
 }
 
 
@@ -153,6 +173,7 @@ async function load() {
   userData = await getUserStatus();
   showBtn(userData);
   await getAttractionData();
+  document.getElementById('loading_icon').remove();
   renderAttraction();
 }
 
@@ -201,15 +222,9 @@ async function startBooking() {
   if(!userData) {
     showModal();
   } else {
-    let bookingStatus = await checkBookingStatus();
-    if(!bookingStatus.data) {
-      createBooking();
-    } else {
-      replaceBooking();
-    }
+    createBooking();
   }
 }
-
 
 window.addEventListener('load', load);
 rightArrow.addEventListener('click', nextPhoto);
@@ -217,3 +232,4 @@ leftArrow.addEventListener('click', previousPhoto);
 morning.addEventListener('click', showMorningPrice);
 afternoon.addEventListener('click', showAfternoonPrice);
 startBookingBtn.addEventListener('click', startBooking);
+closeOkWindowBtn.addEventListener('click', closeOkWindow);
