@@ -34,13 +34,13 @@ This project was built with limited guides from [WeHelp Bootcamp](https://traini
     * [Framework](#framework)
     * [Database](#database)
     * [Cloud Service](#cloud-service)
-* [Third Party Application](#✤-third-party-application)
+* [Payment System](#✤-payment-system)
 * [Main Features](#✤-main-features)
 * [Contact](#contact)
 &nbsp;
 
 ## Tech Stack
-![](https://i.imgur.com/020GthK.png)
+![](https://i.imgur.com/IU5YWKu.png)
 &nbsp;
 
 ## ✤ Front-end Technique
@@ -63,7 +63,7 @@ Without using front-end libraries, this project built with vanilla front-end tec
 ### Cloud Service
 * AWS EC2 (Ubuntu)
 &nbsp;
-## ✤ Third Party Application
+## ✤ Payment System
 Implement credit card payment with [TapPay](https://github.com/TapPay) payment system.
 &nbsp;
 
