@@ -59,17 +59,18 @@ DROP TABLE IF EXISTS `booking`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `booking` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
+  `member_id` bigint NOT NULL,
   `attraction_id` bigint NOT NULL,
   `date` date NOT NULL,
   `time` varchar(20) NOT NULL,
   `price` int NOT NULL,
+  `order_status` smallint NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `attraction_id` (`attraction_id`),
-  KEY `email` (`email`),
-  CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`attraction_id`) REFERENCES `taipei_attractions` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `member_id` (`member_id`),
+  CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`),
+  CONSTRAINT `booking_ibfk_2` FOREIGN KEY (`attraction_id`) REFERENCES `taipei_attractions` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,6 +79,7 @@ CREATE TABLE `booking` (
 
 LOCK TABLES `booking` WRITE;
 /*!40000 ALTER TABLE `booking` DISABLE KEYS */;
+INSERT INTO `booking` VALUES (1,16,2,'2022-04-19','afternoon',2500,0),(2,16,1,'2022-04-11','afternoon',2500,0),(3,16,12,'2022-04-19','morning',2000,0),(4,16,2,'2022-04-19','morning',2000,0),(5,16,6,'2022-04-20','afternoon',2500,0),(6,16,2,'2022-04-27','morning',2000,0),(7,16,1,'2022-04-28','afternoon',2500,0),(8,16,5,'2022-04-20','morning',2000,0),(9,16,11,'2022-04-20','afternoon',2500,0),(10,16,23,'2022-04-27','afternoon',2500,0),(11,16,19,'2022-04-28','morning',2000,0),(12,16,6,'2022-04-19','afternoon',2500,0),(13,16,1,'2022-04-19','morning',2000,0),(14,16,2,'2022-04-06','morning',2000,0),(15,16,3,'2022-04-28','afternoon',2500,0),(16,16,3,'2022-04-25','morning',2000,0),(17,16,4,'2022-04-26','afternoon',2500,0),(18,16,7,'2022-04-20','afternoon',2500,0),(21,16,4,'2022-04-19','afternoon',2500,1),(22,18,12,'2022-04-20','afternoon',2500,0),(23,18,7,'2022-04-19','morning',2000,0),(24,18,1,'2022-04-26','afternoon',2500,0),(25,18,3,'2022-04-19','afternoon',2500,0),(32,18,2,'2022-04-27','afternoon',2500,0),(36,18,1,'2022-04-26','morning',2000,0),(37,18,3,'2022-04-20','afternoon',2500,0),(40,18,7,'2022-04-13','afternoon',2500,0),(43,19,1,'2022-04-16','afternoon',2500,0),(46,18,1,'2022-06-24','afternoon',2500,0);
 /*!40000 ALTER TABLE `booking` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -95,7 +97,7 @@ CREATE TABLE `member` (
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,8 +106,47 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES (2,'Test123','test123@gmail.com','test123'),(3,'ABC','abc@gmail.com','abc'),(4,'asc','asc','asc'),(5,'123','123','123'),(6,'Test','test@gmail.com','test'),(7,'1234','1234','1234'),(8,'5678','5678','5678'),(9,'9898','9898','9898'),(10,'azzx','azzx','azzx'),(11,'9900','9900','9900'),(12,'123','123@','123123'),(13,'abc','abc@','abcabc'),(14,'456','456@','456456'),(15,'789','789@','789789'),(16,'aaa','aaa@','aaa');
+INSERT INTO `member` VALUES (2,'Test123','test123@gmail.com','test123'),(3,'ABC','abc@gmail.com','abc'),(4,'asc','asc','asc'),(5,'123','123','123'),(6,'Test','test@gmail.com','test'),(7,'1234','1234','1234'),(8,'5678','5678','5678'),(9,'9898','9898','9898'),(10,'azzx','azzx','azzx'),(11,'9900','9900','9900'),(12,'123','123@','123123'),(13,'abc','abc@','abcabc'),(14,'456','456@','456456'),(15,'789','789@','789789'),(16,'aaa','aaa@','aaa'),(17,'jj','jj@','jj'),(18,'apple','apple@gmail.com','Apple123'),(19,'banana','banana@gmail.com','Banana123');
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `order`
+--
+
+DROP TABLE IF EXISTS `order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `order` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `order_id` varchar(255) NOT NULL,
+  `member_id` bigint NOT NULL,
+  `contact_name` varchar(255) NOT NULL,
+  `contact_email` varchar(255) NOT NULL,
+  `contact_phone` varchar(255) NOT NULL,
+  `booking_id` bigint NOT NULL,
+  `attraction_id` bigint NOT NULL,
+  `date` date NOT NULL,
+  `time` varchar(20) NOT NULL,
+  `price` int NOT NULL,
+  `total_price` int NOT NULL,
+  `status` smallint NOT NULL DEFAULT '1',
+  `order_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `order_id` (`order_id`),
+  KEY `member_id` (`member_id`),
+  CONSTRAINT `order_ibfk_1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `order`
+--
+
+LOCK TABLES `order` WRITE;
+/*!40000 ALTER TABLE `order` DISABLE KEYS */;
+INSERT INTO `order` VALUES (1,'20220414022026-971717',16,'aaa','aaa@','0987654321',6,2,'2022-04-27','morning',2000,4500,0,'2022-04-14 02:20:26'),(2,'20220414022026-971717',16,'aaa','aaa@','0987654321',7,1,'2022-04-28','afternoon',2500,4500,0,'2022-04-14 02:20:26'),(3,'20220414022136-476792',16,'aaa','aaa@','0988888888',8,5,'2022-04-20','morning',2000,2000,0,'2022-04-14 02:21:36'),(4,'20220414022247-461362',16,'aaa','aaa@','0987666777',9,11,'2022-04-20','afternoon',2500,7000,0,'2022-04-14 02:22:47'),(5,'20220414022247-461362',16,'aaa','aaa@','0987666777',10,23,'2022-04-27','afternoon',2500,7000,0,'2022-04-14 02:22:47'),(6,'20220414022247-461362',16,'aaa','aaa@','0987666777',11,19,'2022-04-28','morning',2000,7000,0,'2022-04-14 02:22:47'),(7,'20220414033029-973578',16,'apple','aaa@','0987876543',12,6,'2022-04-19','afternoon',2500,2500,0,'2022-04-14 03:30:29'),(8,'20220414033615-474454',16,'banana','aaa@','0987898765',13,1,'2022-04-19','morning',2000,2000,0,'2022-04-14 03:36:15'),(9,'20220414034420-111031',16,'aaabbbccc','aaa@','0987899876',14,2,'2022-04-06','morning',2000,2000,0,'2022-04-14 03:44:20'),(10,'20220414034511-395210',16,'abc','aaa@','0988999888',15,3,'2022-04-28','afternoon',2500,2500,0,'2022-04-14 03:45:11'),(11,'20220414034603-610619',16,'aaa','aaa@','0987876543',16,3,'2022-04-25','morning',2000,2000,0,'2022-04-14 03:46:03'),(12,'20220414034832-527119',16,'aaa','aaa@','0987654321',17,4,'2022-04-26','afternoon',2500,5000,0,'2022-04-14 03:48:32'),(13,'20220414034832-527119',16,'aaa','aaa@','0987654321',18,7,'2022-04-20','afternoon',2500,5000,0,'2022-04-14 03:48:32'),(14,'20220415011008-606134',18,'apple','apple@gmail.com','0987654567',22,12,'2022-04-20','afternoon',2500,4500,0,'2022-04-15 01:10:08'),(15,'20220415011008-606134',18,'apple','apple@gmail.com','0987654567',23,7,'2022-04-19','morning',2000,4500,0,'2022-04-15 01:10:08'),(16,'20220415015508-446396',18,'apple','apple@gmail.com','0987898765',24,1,'2022-04-26','afternoon',2500,7500,0,'2022-04-15 01:55:08'),(17,'20220415015508-446396',18,'apple','apple@gmail.com','0987898765',25,3,'2022-04-19','afternoon',2500,7500,0,'2022-04-15 01:55:08'),(18,'20220415015508-446396',18,'apple','apple@gmail.com','0987898765',32,2,'2022-04-27','afternoon',2500,7500,0,'2022-04-15 01:55:08'),(19,'20220415021843-525717',18,'apple','apple@gmail.com','0987876545',36,1,'2022-04-26','morning',2000,4500,0,'2022-04-15 02:18:43'),(20,'20220415021843-525717',18,'apple','apple@gmail.com','0987876545',37,3,'2022-04-20','afternoon',2500,4500,0,'2022-04-15 02:18:43'),(21,'20220415103532-725033',18,'apple','apple@gmail.com','0987654321',40,7,'2022-04-13','afternoon',2500,2500,0,'2022-04-15 10:35:32'),(22,'20220415135023-781345',19,'banana','banana@gmail.com','0989876543',43,1,'2022-04-16','afternoon',2500,2500,0,'2022-04-15 13:50:23'),(23,'20220616010232-767154',18,'apple','apple@gmail.com','0912345678',46,1,'2022-06-24','afternoon',2500,2500,0,'2022-06-16 01:02:32');
+/*!40000 ALTER TABLE `order` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -149,4 +190,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-29  1:16:49
+-- Dump completed on 2022-06-17 12:32:52
