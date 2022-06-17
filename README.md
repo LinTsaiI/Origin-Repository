@@ -57,7 +57,7 @@ Without using front-end libraries, this project built with vanilla front-end tec
 ### Database
 * MySQL
 &nbsp;
-![](https://i.imgur.com/rEzt0iu.png)
+![](https://i.imgur.com/vw0g6GL.png)
 &nbsp;
 
 ### Cloud Service
@@ -117,6 +117,6 @@ Support desktop, tablet, and mobile devices.
 
 ## Contact
 
-:blush:Developer: Tsai-I, Lin
-:link:LinkedIn: [www.linkedin.com/in/lintsaii](https://)
-:mailbox:Email: alicelin9326@gmail.com
+* :blush:Developer: Tsai-I, Lin
+* :link:LinkedIn: [www.linkedin.com/in/lintsaii](https://)
+* :mailbox:Email: alicelin9326@gmail.com
