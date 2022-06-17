@@ -29,13 +29,13 @@ This project was built with limited guides from [WeHelp Bootcamp](https://traini
 ## Table of Content
 
 * [Tech Stack](#tech-stack)
-* [Front-end Technique](#✤-front-end-technique)
-* [Back-end Technique](#✤-back-end-technique)
+* [Front-end Technique](#-front-end-technique)
+* [Back-end Technique](#-back-end-technique)
     * [Framework](#framework)
     * [Database](#database)
     * [Cloud Service](#cloud-service)
-* [Payment System](#✤-payment-system)
-* [Main Features](#✤-main-features)
+* [Payment System](#-payment-system)
+* [Main Features](#-main-features)
 * [Contact](#contact)
 &nbsp;
 
